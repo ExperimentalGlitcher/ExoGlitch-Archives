@@ -1,2 +1,2 @@
-# GlitchXArras
-In WIP
+# ExoGlitch.io
+Working in Progress

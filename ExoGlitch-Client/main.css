@@ -25,7 +25,7 @@ html, body {
 body {
   font-family: Ubuntu;
   font-size: 14px;
-  background-color: #484848;
+  background-color: #000048;
 }
 
 hr {
@@ -57,16 +57,16 @@ div.optionsHeader {
 
 h3 {
   font-size: 14px;
-  color: #484848;
+  color: #000048;
   text-align: center;
   padding: 0;
   margin: 4px 0;
 }
 #startMenuSlidingTrigger:hover > h3 {
-  color: #323232;
+  color: #000032;
 }
 #startMenuSlidingTrigger:hover > h3 > i.arrow {
-  border-color: #323232;
+  border-color: #000032;
 }
 
 .serverSelector {
@@ -81,15 +81,15 @@ h3 {
   scrollbar-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.15);
 }
 .serverSelector tr {
-  color: #828282;
+  color: #000082;
   cursor: pointer;
 }
 .serverSelector tr.featured {
-  color: #e8ae00;
-  text-shadow: /*#ffe500 0 0 4px,*/ #fff27e 0 0 6px;
+  color: #005AFF;
+  text-shadow: /*#ffe500 0 0 4px,*/ #005AFF 0 0 6px;
 }
 .serverSelector tr.selected {
-  color: #8ABC3F;
+  color: #00AEFF;
   cursor: default;
 }
 
@@ -97,28 +97,28 @@ h3 {
   overflow-y: scroll;
   background:
     /* Shadow covers */
-    linear-gradient(#dde6eb 30%, rgba(255, 255, 255, 0)),
-    linear-gradient(rgba(255, 255, 255, 0), #dde6eb 70%) 0 100%,
+    linear-gradient(#005aff 30%, rgba(255, 255, 255, 0)),
+    linear-gradient(rgba(255, 255, 255, 0), #005aff 70%) 0 100%,
     /* Shadows */
     radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)),
     radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
   background-repeat: no-repeat;
-  background-color: #dde6eb;
+  background-color: #005aff;
   background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
   background-attachment: local, local, scroll, scroll;
 }
 a:link, a:visited {
-  color: #484848;
+  color: #000048;
 }
 a:link:hover, a:visited:hover {
-  color: #909090;
+  color: #000090;
 }
 
 input {
   text-align: center;
   width: 100%;
   padding: 10px;
-  border: solid 1px #dcdcdc;
+  border: solid 1px #0000dc;
   box-sizing: border-box;
   border-radius: 5px;
   margin-top: 5px;
@@ -138,13 +138,13 @@ input {
 }
 
 input:focus {
-  border: solid 1px #CCCCCC;
+  border: solid 1px #0000CC;
 }
 
 input.error {
-  border: solid 1px #f00;
-  background: #fee;
-  color: #a00;
+  border: solid 1px #ff0000;
+  background: #ffeeee;
+  color: #aa0000;
 }
 
 #mainWrapper {
@@ -157,7 +157,7 @@ input.error {
   max-height: 390px;
   padding: 10px;
   border-radius: 5px;
-  background-color: #DDE6EB;
+  background-color: #00AEFF;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -275,26 +275,26 @@ a.menuTab:link:hover, a.menuTab:visited:hover {
 }
 .changelogSelector span {
   transition: color 500ms;
-  color: #222;
+  color: #222222;
   cursor: pointer;
 }
 .changelogSelector span:hover {
   transition: color 200ms;
-  color: #555;
+  color: #555555;
 }
 .changelogSelector span.active {
-  color: #777;
+  color: #777777;
   cursor: default;
 }
 
 .changelogSelector span:not(:first-child)::before {
   content: ' ';
-  color: #aaa;
+  color: #aaaaaa;
   margin: 0 3px 0 0;
 }
 .changelogSelector span:not(:last-child)::after {
   content: ' |';
-  color: #aaa;
+  color: #aaaaaa;
   margin: 0 0 0 3px;
 }
 
@@ -369,11 +369,11 @@ body.mobile .controlTable {
   vertical-align: bottom;
 }
 .controlTable td b:hover {
-  color: #777;
+  color: #777777;
 }
 .controlTable td.editing b {
-  background: #fff;
-  color: #333;
+  background: #ffffff;
+  color: #333333;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
   padding: 1px 4px;
@@ -470,7 +470,7 @@ body.mobile .icon {
   font-weight: bold;
 }
 #patchNotes b small {
-  color: #444;
+  color: #000044;
 }
 #patchNotes b small a {
   margin-left: 10px;
@@ -525,24 +525,24 @@ body.mobile .icon {
   color: white;
   text-align: center;
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
-  background: #A9D86D;
+  background: #0090FF;
   border: 0;
-  border-bottom: 2px solid #8ABC3F;
+  border-bottom: 2px solid #005AFF;
   cursor: pointer;
-  box-shadow: inset 0 -2px #8ABC3F;
+  box-shadow: inset 0 -2px #005AFF;
   border-radius: 5px;
   font: 16px Ubuntu;
 }
 #startButton:hover {
   margin-top: 1px;
   height: 39px;
-  border-bottom: 1px solid #8ABC3F;
+  border-bottom: 1px solid #005AFF;
 }
 
 #startButton:active {
   margin-top: 2px;
   height: 38px;
-  background: #8ABC3F;
+  background: #005AFF;
   border-bottom: 0px
   outline: none;
   box-shadow: none;
@@ -562,7 +562,7 @@ body.mobile .icon {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   text-decoration: none;
   cursor: pointer;
-  background: #B58EFD;
+  background: #000000;
   border-radius: 5px;
   box-shadow: inset 0 -4px rgba(0, 0, 0, 0.15);
 }
@@ -646,8 +646,8 @@ body.mobile #startMenuWrapper { max-width: 750px; }
 }
 
 .container input:checked ~ .checkmark {
-  background-color: #8ABC3F;
-  border: 1px solid #8ABC3F;
+  background-color: #005AFF;
+  border: 1px solid #005AFF;
 }
 
 .container:hover input:checked ~ .checkmark {
@@ -684,31 +684,31 @@ body.mobile #startMenuWrapper { max-width: 750px; }
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background-color: #eee;
-  border: 1px solid #ccc;
+  background-color: #0000ee;
+  border: 1px solid #0000cc;
 }
 
 .container:hover input ~ .radio {
-  background-color: #ccc;
+  background-color: #0000cc;
 }
 
 .container input:disabled ~ .radio {
-  background-color: #ddd;
+  background-color: #0000dd;
 }
 
 .container input:checked ~ .radio {
-  background-color: #8ABC3F;
-  border: 1px solid #8ABC3F;
+  background-color: #00AEFF;
+  border: 1px solid #00AEFF;
 }
 
 .container:hover input:checked ~ .radio {
-  background-color: #7FA843;
-  border: 1px solid #7FA843;
+  background-color: #005AFF;
+  border: 1px solid #005AFF;
 }
 
 .container input:disabled:checked ~ .radio {
-  background-color: #a1c172;
-  border: 1px solid #a1c172;
+  background-color: #005AFF;
+  border: 1px solid #005AFF;
 }
 
 .container .radio:after {
@@ -718,7 +718,7 @@ body.mobile #startMenuWrapper { max-width: 750px; }
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #fff;
+  background: #0000ff;
 }
 
 .container input:checked ~ .radio:after {
@@ -753,13 +753,13 @@ select {
   copy(canvas.toDataURL())
   */
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #0000cc;
 }
 select:hover {
-  background-color: #ccc;
+  background-color: #0000cc;
 }
 select:active {
-  background-color: #eee;
+  background-color: #0000ee;
 }
 
 .tooltip {
@@ -772,7 +772,7 @@ select:active {
   text-align: center;
   background: rgb(0, 0, 0, 0.6);
   font: bold 10px/15px Ubuntu;
-  color: #fff;
+  color: #ffffff;
   margin: 0 4px;
 }
 .tooltip::before {
@@ -783,7 +783,7 @@ select:active {
   position: absolute;
   width: 160px;
   background-color: #444444;
-  color: #fff;
+  color: #ffffff;
   font: bold 11px Ubuntu;
   text-align: center;
   border-radius: 6px;
@@ -816,7 +816,7 @@ i {
   transition: transform 500ms;
 }
 i.arrow {
-  border: solid #484848;
+  border: solid #000048;
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
@@ -825,7 +825,7 @@ i.reset {
   display: inline-block;
   width: 8px;
   height: 8px;
-  border: #000 2px solid;
+  border: #000000 2px solid;
   border-right-color: transparent;
   border-radius: 50%;
   position: relative;
@@ -835,7 +835,7 @@ i.reset::after {
   content: '';
   display: inline-block;
   border: 3px solid;
-  border-color: transparent #000 #000 transparent;
+  border-color: transparent #000000 #000000 transparent;
   position: relative;
   left: 3px;
   bottom: 8px;
@@ -853,7 +853,7 @@ i.cross.x {
 i.cross::before, i.cross::after {
   content: '';
   display: inline-block;
-  background-color: #000;
+  background-color: #000000;
   border-radius: 2px;
   float: left;
 }
@@ -871,7 +871,7 @@ i.flag {
   display: inline-block;
   width: 2px;
   height: 12px;
-  background: #000;
+  background: #000000;
   margin: 0 15px 0 5px;
 }
 i.flag::before {
@@ -879,7 +879,7 @@ i.flag::before {
   display: inline-block;
   width: 9px;
   height: 7px;
-  background-color: #000;
+  background-color: #000000;
   margin: 0 0 5px 3px;
   transition: margin-bottom 500ms;
 }

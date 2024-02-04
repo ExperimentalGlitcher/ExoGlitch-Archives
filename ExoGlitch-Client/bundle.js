@@ -1,4 +1,4 @@
-var somethinglolcuzimlazy = "";
+var somethinglolcuzimlazy = "36";
 ~function () {
   "use strict";
   var I = I || {};
@@ -222,46 +222,47 @@ var somethinglolcuzimlazy = "";
 
       function e(b) {
         switch (b) {
-          case 0:
+          case 0: // gem
             return l.teal;
-          case 1:
+          case 1: // shiny
             return l.lgreen;
-          case 2:
+          case 2: // triangle
             return l.orange;
-          case 3:
+          case 3: // jewel
             return l.yellow;
-          case 4:
+          case 4: // idk
             return l.lavender;
-          case 5:
+          case 5: // crasher
             return l.pink;
-          case 6:
+          case 6: // egg
             return l.vlgrey;
-          case 7:
+          case 7: // AHHHHHH
             return l.lgrey;
-          case 8:
+          case 8: // PURE WHITE
             return l.guiwhite;
-          case 9:
+          case 9: // shell color
             return l.black;
-          case 10:
+          case 10: // blue team
             return l.blue;
-          case 11:
+          case 11: // green team
             return l.green;
-          case 12:
+          case 12: // red team
             return l.red;
-          case 13:
+          case 13: // square
             return l.gold;
-          case 14:
+          case 14: // pentagon
             return l.purple;
-          case 15:
+          case 15: // magenta team
             return l.magenta;
-          case 16:
+          case 16: // barrel color
             return l.grey;
-          case 17:
+          case 17: // rogues
             return l.dgrey;
-          case 18:
+          case 18: // fallen bosses
             return l.white;
-          case 19:
+          case 19: // PURE BLACK
             return l.guiblack;
+          // police colors
           case 20:
             return 150 > Date.now() % 300 ? l.blue : l.red;
           case 21:
@@ -272,8 +273,9 @@ var somethinglolcuzimlazy = "";
             return 150 > Date.now() % 300 ? l.red : l.grey;
           case 24:
             return 150 > Date.now() % 300 ? l.grey : l.red;
+          // relic gem colors
           case 30:
-            return "#d21fff";
+            return "#a913cf";
           case 31:
             return "#226ef6";
           case 32:
@@ -284,9 +286,7 @@ var somethinglolcuzimlazy = "";
             return "#00e00b";
           case 35:
             return "#ffd300";
-          case 36: //old rainbow
-            return "#" + Math.floor(Math.random() * 16777215).toString(16);
-          case 37: // new rainbow
+          case 36: // rainbow
             return Ib(
               "#ff1000 #ff9000 #ffd300 #00e00b #226ef6 #a913cf".split(" ")[
                 Math.floor((Date.now() / 200) % 6)
@@ -736,7 +736,7 @@ var somethinglolcuzimlazy = "";
               g.globalAlpha = d;
             }
           } //name color
-          if (somethinglolcuzimlazy == "") { // if it's a beta tester, render it yellow
+          if (somethinglolcuzimlazy == "36") { // if it's a beta tester, render it yellow
             c.nameplate &&
               c.id !== A.playerid &&
               (null == c.render.textobjs && (c.render.textobjs = [m(), m()]),
@@ -1944,7 +1944,7 @@ var somethinglolcuzimlazy = "";
                         "dying" === b || "killed" === b
                           ? 1 - Math.min(1, (Date.now() - a) / 300)
                           : 1,
-                      getColor: () => "#FFFFFF",
+                      getColor: () => l.red,
                       getBlend: () => {
                         let c =
                           "normal" === b || "dying" === b
@@ -2287,6 +2287,7 @@ var somethinglolcuzimlazy = "";
                 z.renderx = z.cx;
                 z.rendery = z.cy;
                 z.renderv = z.view;
+                // i wont give it a damn if the camera was forced move. Ok I forced this.
                 ia &&
                   (clearInterval(qa),
                   Y.push({
@@ -4656,7 +4657,7 @@ if (b.label.includes('‮noremaKorP'))ca[a].draw(b.label + ": " + H.handleLargeN
             id: "a",
             type: "1ffa",
             code: "ffa-f",
-            at: p.glitch("arras-template3"), //Server Here!
+            at: p.glitch("exoglitch-ffa"), //Server Here!
           },
         ]
           .map((a, e) => ({

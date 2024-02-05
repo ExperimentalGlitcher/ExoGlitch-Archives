@@ -722,81 +722,27 @@ class io_hangOutNearMaster extends IO {
     }
 }
 class io_spin extends IO {
-    constructor(b) {
-        super(b);
-        this.a = 0;
+    constructor(b, opts = {}) {
+        super(b)
+        this.a = opts.startAngle || 0;
+        this.speed = opts.speed || 0.04;
+        this.onlyWhenIdle = opts.onlyWhenIdle;
+        this.independent = opts.independent;
     }
-    
     think(input) {
-        this.a += 0.05;
-        let offset = 0;
-        if (this.body.bond != null) {
-            offset = this.body.bound.angle;
+        if (this.onlyWhenIdle && input.target) {
+            this.a = Math.atan2(input.target.y, input.target.x);
+            return input;
         }
-        return {                
-            target: {
-                x: Math.cos(this.a + offset),
-                y: Math.sin(this.a + offset),
-            },  
-            main: true,
-        };        
-    }
-}
-class io_fastspin extends IO {
-    constructor(b) {
-        super(b);
-        this.a = 0;
-    }
-    
-    think(input) {
-        this.a += 0.072;
-        let offset = 0;
-        if (this.body.bond != null) {
-            offset = this.body.bound.angle;
-        }
-        return {                
-            target: {
-                x: Math.cos(this.a + offset),
-                y: Math.sin(this.a + offset),
-            },  
-            main: true,
-        };        
-    }
-}
-class io_reversespin extends IO {
-    constructor(b) {
-        super(b);
-        this.a = 0;
-    }
-    
-    think(input) {
-        this.a -= 0.05;
-        let offset = 0;
-        if (this.body.bond != null) {
-            offset = this.body.bound.angle;
-        }
-        return {                
-            target: {
-                x: Math.cos(this.a + offset),
-                y: Math.sin(this.a + offset),
-            },  
-            main: true,
-        };        
-    }
-}
-class io_dontTurn extends IO {
-    constructor(b) {
-        super(b);
-    }
-    
-    think(input) {
+        this.a += this.speed;
+        let offset = (this.independent && this.body.bond != null) ? this.body.bound.angle : 0;
         return {
             target: {
-                x: 1,
-                y: 0,
-            },  
+                x: Math.cos(this.a + offset),
+                y: Math.sin(this.a + offset),
+            },
             main: true,
-        };        
+        };
     }
 }
 class io_fleeAtLowHealth extends IO {
@@ -816,6 +762,116 @@ class io_fleeAtLowHealth extends IO {
         }
     }
 
+}
+class io_whirlwind extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.body.angle = 0;
+        this.minDistance = opts.minDistance || 3.5;
+        this.maxDistance = opts.maxDistance || 10;
+        this.body.dist = opts.initialDist || this.minDistance * this.body.size;
+        this.body.inverseDist = this.maxDistance * this.body.size - this.body.dist + this.minDistance * this.body.size;
+        this.radiusScalingSpeed = opts.radiusScalingSpeed || 10;
+    }
+    
+    think(input) {
+        this.body.angle += (this.body.skill.spd * 2 + this.body.aiSettings.SPEED) * Math.PI / 180;
+        let trueMaxDistance = this.maxDistance * this.body.size;
+        let trueMinDistance = this.minDistance * this.body.size;
+        if(input.fire){
+            if(this.body.dist <= trueMaxDistance) {
+                this.body.dist += this.radiusScalingSpeed;
+                this.body.inverseDist -= this.radiusScalingSpeed;
+            }
+        }
+        else if(input.alt){
+            if(this.body.dist >= trueMinDistance) {
+                this.body.dist -= this.radiusScalingSpeed;
+                this.body.inverseDist += this.radiusScalingSpeed;
+            }
+        }
+        this.body.dist = Math.min(trueMaxDistance, Math.max(trueMinDistance, this.body.dist));
+        this.body.inverseDist = Math.min(trueMaxDistance, Math.max(trueMinDistance, this.body.inverseDist));
+    }
+}
+class io_orbit extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.realDist = 0;
+        this.invert = opts.invert || false;
+    }
+  
+    think(input) {
+        let invertFactor = this.invert ? -1 : 1,
+            master = this.body.master.master,
+            dist = this.invert ? master.inverseDist : master.dist,
+            angle = (this.body.angle * Math.PI / 180 + master.angle) * invertFactor;
+        
+        if(this.realDist > dist){
+            this.realDist -= Math.min(10, Math.abs(this.realDist - dist));
+        }
+        else if(this.realDist < dist){
+            this.realDist += Math.min(10, Math.abs(dist - this.realDist));
+        }
+        this.body.x = master.x + Math.cos(angle) * this.realDist;
+        this.body.y = master.y + Math.sin(angle) * this.realDist;
+        
+        this.body.facing = angle;
+    }
+}
+class io_disableOnOverride extends IO {
+    constructor(body) {
+        super(body);
+        this.pacify = false;
+        this.lastPacify = false;
+    }
+
+    think(input) {
+        if (!this.initialAlpha) {
+            this.initialAlpha = this.body.alpha;
+            this.targetAlpha = this.initialAlpha;
+        }
+        
+        this.pacify = (this.body.parent.master.autoOverride || this.body.parent.master.master.autoOverride);
+        if (this.pacify && !this.lastPacify) {
+            this.targetAlpha = 0;
+            this.body.pacify = true;
+            this.body.refreshBodyAttributes();
+        } else if (!this.pacify && this.lastPacify) {
+            this.targetAlpha = this.initialAlpha;
+            this.body.pacify = false;
+            this.body.refreshBodyAttributes();
+        }
+        this.lastPacify = this.pacify;
+
+        if (this.body.alpha != this.targetAlpha) {
+            this.body.alpha += util.clamp(this.targetAlpha - this.body.alpha, -0.05, 0.05);
+            if (this.body.flattenedPhoto) this.body.flattenedPhoto.alpha = this.body.alpha;
+        }
+    }
+}
+
+let ioTypes = {
+    doNothing: io_doNothing,
+    listenToPlayer: io_listenToPlayer,
+    alwaysFire: io_alwaysFire,
+    mapAltToFire: io_mapAltToFire,
+    whirlwind: io_whirlwind,
+    disableOnOverride: io_disableOnOverride,
+    nearestDifferentMaster: io_nearestDifferentMaster,
+    targetSelf: io_targetSelf,
+    onlyAcceptInArc: io_onlyAcceptInArc,
+    spin: io_spin,
+    canRepel: io_canRepel,
+    mapTargetToGoal: io_mapTargetToGoal,
+    moveInCircles: io_moveInCircles,
+    boomerang: io_boomerang,
+    orbit: io_orbit,
+    goToMasterTarget: io_goToMasterTarget,
+    avoid: io_avoid,
+    minion: io_minion,
+    hangOutNearMaster: io_hangOutNearMaster,
+    fleeAtLowHealth: io_fleeAtLowHealth,
 }
 
 /***** ENTITIES *****/
@@ -1700,6 +1756,9 @@ class Entity {
         if (set.LABEL != null) { 
             this.label = set.LABEL; 
         }
+        if (set.ANGLE != null) {
+            this.angle = set.ANGLE;
+        }
         if (set.TYPE != null) { 
             this.type = set.TYPE; 
         }
@@ -1712,9 +1771,11 @@ class Entity {
         }   
         if (set.CONTROLLERS != null) { 
             let toAdd = [];
-            set.CONTROLLERS.forEach((ioName) => {
-                toAdd.push(eval('new io_' + ioName + '(this)'));
-            });
+            for (let i = 0; i < set.CONTROLLERS.length; i++) {
+                let io = set.CONTROLLERS[i];
+                if ("string" == typeof io) io = [io];
+                toAdd.push(new ioTypes[io[0]](this, io[1]));
+            }
             this.addController(toAdd);
         }
         if (set.MOTION_TYPE != null) { 
@@ -2115,6 +2176,24 @@ class Entity {
             },
             a = this.acceleration / roomSpeed;
         switch (this.motionType) {
+        case 'accel':
+        case 'accelerate':
+            this.maxSpeed = this.topSpeed;
+            this.damp = -0.0125;
+            this.DAMAGE -= 10; // .05, 1, 2
+            break;
+        case 'grow':
+            this.SIZE += 0.175;
+            break;
+        case 'fastgrow':
+            this.SIZE += 0.875;
+            break;
+        case 'flare':
+            this.maxSpeed = this.topSpeed;
+            this.damp = -0.025;
+            this.SIZE += 0.25;
+            this.DAMAGE -= 0.175;
+            break;
         case 'glide':
             this.maxSpeed = this.topSpeed;
             this.damp = 0.05;
@@ -2131,6 +2210,16 @@ class Entity {
                     y: a * g.y / len,
                 };
             }
+            break;
+        case 'spgw':
+            this.SIZE += 0.75;
+            this.maxSpeed = this.topSpeed;
+            this.damp = -0.025;
+            break;
+        case 'chonk':
+            this.SIZE += 50;
+            this.maxSpeed = this.topSpeed;
+            this.damp = -0.025;
             break;
         case 'swarm': 
             this.maxSpeed = this.topSpeed;
@@ -2151,7 +2240,7 @@ class Entity {
                     };
                 }
             }
-            break;        
+            break;
         case 'chase':
             if (gactive) {
                 let l = util.getDistance({ x: 0, y: 0, }, g);
@@ -2186,6 +2275,15 @@ class Entity {
             this.firingArc = [ref.facing + bound.angle, bound.arc / 2];
             nullVector(this.accel);
             this.blend = ref.blend;
+            break;
+        case 'withMaster':
+            this.x = this.source.x;
+            this.y = this.source.y;
+            this.velocity.x = this.source.velocity.x;
+            this.velocity.y = this.source.velocity.y;
+            break;
+        case 'assembler':
+            this.SIZE += 0.17;
             break;
         }
         this.accel.x += engine.x * this.control.power;

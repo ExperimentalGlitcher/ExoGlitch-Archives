@@ -368,6 +368,24 @@ exports.bullet = {
     HITS_OWN_TYPE: 'never',
     DIE_AT_RANGE: true
 };
+exports.speedBullet = {
+    PARENT: [exports.bullet],
+    MOTION_TYPE: 'accel'
+};
+exports.growBullet = {
+    PARENT: [exports.bullet],
+    MOTION_TYPE: 'grow'
+};
+exports.flare = {
+    PARENT: [exports.growBullet],
+	LABEL: 'Flare',
+    SHAPE: 4,
+    MOTION_TYPE: 'flare'
+};
+exports.developerBullet = {
+    PARENT: [exports.bullet],
+    SHAPE: [[-1, -1], [1, -1], [2, 0], [1, 1], [-1, 1]]
+};
 exports.casing = {
     PARENT: [exports.bullet],
     LABEL: 'Shell',
@@ -426,6 +444,94 @@ exports.trap = {
         SPEED: 0
     }
 };
+exports.satellite = {
+    LABEL: 'Satellite',
+    TYPE: 'satellite',
+    ACCEPTS_SCORE: false,
+	DANGER: 2,
+    SHAPE: 0,
+	CONTROLLERS: ['orbit'],
+	FACING_TYPE: 'autospin',
+    BODY: {
+        PENETRATION: 1.2,
+        PUSHABILITY: 0.6,
+        ACCELERATION: 0.75,
+        HEALTH: 0.3,
+        DAMAGE: 3.375,
+        SPEED: 10,
+        RANGE: 200,
+        DENSITY: 0.03,
+        RESIST: 1.5,
+        FOV: 0.5
+    },
+    DRAW_HEALTH: false,
+    CLEAR_ON_MASTER_UPGRADE: true,
+    BUFF_VS_FOOD: true,
+    MOTION_TYPE: 'motor'
+};
+exports.mendersymbol = {
+    PARENT: [exports.genericTank],
+    COLOR: 16,
+    LABEL: '',
+    SHAPE: 3
+};
+exports.healerBullet = {
+    PARENT: [exports.bullet],
+    HEALER: true,
+    HITS_OWN_TYPE: 'normal'
+};
+exports.healerSymbol = {
+    PARENT: [exports.genericEntity],
+    SHAPE: [[0.3, -0.3],[1,-0.3],[1,0.3],[0.3,0.3],[0.3,1],[-0.3,1],[-0.3,0.3],[-1,0.3],[-1,-0.3],[-0.3,-0.3],[-0.3,-1],[0.3,-1]],
+    SIZE: 13,
+    COLOR: 12
+};
+exports.auraBase = {
+    TYPE: 'aura',
+    ACCEPTS_SCORE: false,
+    FACING_TYPE: 'smoothWithMotion',
+    MOTION_TYPE: 'withMaster',
+    CAN_GO_OUTSIDE_ROOM: true,
+    HITS_OWN_TYPE: 'never',
+    DAMAGE_EFFECTS: false,
+    DIE_AT_RANGE: false,
+    ALPHA: 0.3,
+    CLEAR_ON_MASTER_UPGRADE: true,
+    CAN_GO_OUTSIDE_ROOM: true,
+    CONTROLLERS: ['disableOnOverride'],
+    BODY: {
+        SHIELD: 1e9,
+        REGEN: 1e6,
+        HEALTH: 1e9,
+        DENSITY: 0,
+        SPEED: 0,
+        PUSHABILITY: 0
+    }
+};
+exports.aura = {
+    PARENT: [exports.auraBase],
+    LABEL: 'Aura',
+    COLOR: 0,
+    BODY: {
+        DAMAGE: 0.5
+    }
+};
+exports.healAura = {
+    PARENT: [exports.auraBase],
+    LABEL: 'Heal Aura',
+    HEALER: true,
+    COLOR: 12,
+    BODY: {
+        DAMAGE: 0.1
+    }
+};
+exports.auraSymbol = {
+    PARENT: [exports.genericTank],
+    CONTROLLERS: [['spin', {speed: -0.04}]],
+    INDEPENDENT: true,
+    COLOR: 0,
+    SHAPE: [[-0.598,-0.7796],[-0.3817,-0.9053],[0.9688,-0.1275],[0.97,0.125],[-0.3732,0.9116],[-0.593,0.785]]
+};
 
 // FUNCTIONS
 const deepCopy = (type) => {
@@ -480,6 +586,152 @@ const applyStats = (guns, stats, options = {}) => {
         }
     }
 };
+const makeGuard = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || output.LABEL + ' Guard';
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [13, 8, 1, 0, 0, 180, 0],
+    }, {
+        POSITION: [4, 8, 1.7, 13, 0, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.trap]),
+            TYPE: exports.trap,
+			STAT_CALCULATOR: gunCalcNames.trap
+        }
+    });
+    return output;
+};
+const makeConq = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || output.LABEL + ' Conqueror';
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [18, 14, 1, 0, 0, 180, 0],
+    }, {
+        POSITION: [2, 14, 1.1, 18, 0, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.trap, g.setTrap]),
+            TYPE: exports.setTrap
+        }
+    });
+    return output;
+};
+const makeSplit = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Split ' + output.LABEL;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [18, 8, 1, 0, 0, 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard]),
+            TYPE: exports.bullet
+        }
+    });
+    return output;
+};
+const addBackGunner = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || output.LABEL;
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [19, 2, 1, 0, -2.5, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, g.twin, [1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [19, 2, 1, 0, 2.5, 180, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, g.twin, [1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [12, 11, 1, 0, 0, 180, 0]
+    });
+    return output;
+};
+const makeMulti = (type, sides = 3, name, options = {}) => {
+    let output = deepCopy(type),
+        reloadDelay = options.reload_delay || new Array(sides),
+        stats = options.stats || [g.blank],
+        angles = options.angles || new Array(sides);
+
+    applyStats(output.GUNS, [g.flankGuard, ...stats]);
+
+    let baseGuns = deepCopy(output.GUNS);
+    output.GUNS = [];
+    for (let i = 0; i < sides; i++) {
+        for (let j = 0; j < baseGuns.length; j++) {
+            let outputGun = deepCopy(baseGuns[j]);
+            outputGun.POSITION[5] += angles[i] == undefined ? 360 / sides * i : angles[i];
+            if (reloadDelay[i] != undefined) outputGun.POSITION[6] += reloadDelay[i];
+            output.GUNS.push(outputGun);
+        }
+    }
+    output.LABEL = name || `Flank ${output.LABEL}`;
+    return output;
+};
+const makeBird = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Bird ' + output.LABEL;
+	for (let i in output.GUNS) if (output.GUNS[i].PROPERTIES) output.GUNS[i].PROPERTIES.ALT_FIRE = true;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.triAngle, g.thruster, [1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet,
+            STAT_CALCULATOR: gunCalcNames.thruster
+        }
+    }, {
+        POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.triAngle, g.thruster, [1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet,
+            STAT_CALCULATOR: gunCalcNames.thruster
+        }
+    }, {
+        POSITION: [18, 8, 1, 0, 0, 180, 0.6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.triAngle, g.thruster, [1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet,
+            STAT_CALCULATOR: gunCalcNames.thruster
+        }
+    });
+    return output;
+};
+const makeBirdBot = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Bird ' + output.LABEL;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.triAngle, g.thruster, [1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet,
+            STAT_CALCULATOR: gunCalcNames.thruster
+        }
+    }, {
+        POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.triAngle, g.thruster, [1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet,
+            STAT_CALCULATOR: gunCalcNames.thruster
+        }
+    }, {
+        POSITION: [18, 8, 1, 0, 0, 180, 0.6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.triAngle, g.thruster, [1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet,
+            STAT_CALCULATOR: gunCalcNames.thruster
+        }
+    });
+    return output;
+};
 const makeHybrid = (type, name, options = {
     isYoukron: false,
     drone: 'drone',
@@ -493,7 +745,7 @@ const makeHybrid = (type, name, options = {
 
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
-        POSITION: [7, 12, 1.2, 8, 0, 180, 0],
+        POSITION: [6, 12, 1.2, 8, 0, 180, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.drone, g.weak]),
             TYPE: [exports[options.drone], {
@@ -508,7 +760,6 @@ const makeHybrid = (type, name, options = {
     });
 
     output.LABEL = name || (options.isYoukron ? 'Youkron ' : 'Hybrid ') + type.LABEL;
-    if (output.DANGER < 7) output.DANGER++;
     output.STAT_NAMES = statnames.mixed;
 
     if (options.isYoukron) output.SHAPE = 9;
@@ -521,6 +772,245 @@ const makeHybrid = (type, name, options = {
         });
     }
 
+    return output;
+};
+const makeOver = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Over' + output.LABEL.toLowerCase();
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [6, 12, 1.2, 8, 0, 125, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.overseer]),
+            TYPE: exports.drone,
+			AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            WAIT_TO_CYCLE: true,
+            MAX_CHILDREN: 3
+        }
+    }, {
+        POSITION: [6, 12, 1.2, 8, 0, 235, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.overseer]),
+            TYPE: exports.drone,
+			AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            WAIT_TO_CYCLE: true,
+            MAX_CHILDREN: 3
+        }
+    });
+    return output;
+};
+const makeOversplit = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Over' + output.LABEL.toLowerCase();
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [6, 12, 1.2, 8, 0, 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.overseer]),
+            TYPE: exports.drone,
+			AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            WAIT_TO_CYCLE: true,
+            MAX_CHILDREN: 3
+        }
+    }, {
+        POSITION: [6, 12, 1.2, 8, 0, 270, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.overseer]),
+            TYPE: exports.drone,
+			AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            WAIT_TO_CYCLE: true,
+            MAX_CHILDREN: 3
+        }
+    });
+    return output;
+};
+const makeBattle = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Battle' + output.LABEL.toLowerCase();
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [7, 7.5, 0.6, 7, 4, 125, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.swarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    }, {
+        POSITION: [7, 7.5, 0.6, 7, -4, 125, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.swarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    }, {
+        POSITION: [7, 7.5, 0.6, 7, 4, 235, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.swarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    }, {
+        POSITION: [7, 7.5, 0.6, 7, -4, 235, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.swarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    });
+    return output;
+};
+const makeCap = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Cap' + output.LABEL.toLowerCase();
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [4.5, 10, 1, 10.5, 0, 125, 0]
+    }, {
+        POSITION: [1, 12, 1, 15, 0, 125, 0],
+        PROPERTIES: {
+            MAX_CHILDREN: 4,
+            SHOOT_SETTINGS: combineStats([g.factory, g.babyfactory]),
+            TYPE: exports.minion,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true
+        }
+    }, {
+        POSITION: [11.5, 12, 1, 0, 0, 125, 0]
+    }, {
+        POSITION: [4.5, 10, 1, 10.5, 0, 235, 0]
+    }, {
+        POSITION: [1, 12, 1, 15, 0, 235, 0],
+        PROPERTIES: {
+            MAX_CHILDREN: 4,
+            SHOOT_SETTINGS: combineStats([g.factory, g.babyfactory]),
+            TYPE: exports.minion,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true
+        }
+    }, {
+        POSITION: [11.5, 12, 1, 0, 0, 235, 0]
+    });
+    return output;
+};
+const makeCross = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Cross-' + output.LABEL;
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [6, 12, 1.2, 8, 0, 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.overseer]),
+            TYPE: exports.drone,
+			AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            WAIT_TO_CYCLE: true,
+            MAX_CHILDREN: 2
+        }
+    }, {
+        POSITION: [6, 12, 1.2, 8, 0, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.overseer]),
+            TYPE: exports.drone,
+			AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            WAIT_TO_CYCLE: true,
+            MAX_CHILDREN: 2
+        }
+    }, {
+        POSITION: [6, 12, 1.2, 8, 0, 270, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.overseer]),
+            TYPE: exports.drone,
+			AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            WAIT_TO_CYCLE: true,
+            MAX_CHILDREN: 2
+        }
+    });
+    return output;
+};
+const makeSwarming = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Swarming ' + output.LABEL;
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [7, 7.5, 0.6, 7, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.autoswarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    });
+    return output;
+};
+const makeBiSwarming = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Bi-Swarming ' + output.LABEL;
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [7, 7.5, 0.6, 7, 0, 25, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.autoswarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    }, {
+        POSITION: [7, 7.5, 0.6, 7, 0, -25, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.autoswarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    });
+    return output;
+};
+const makeTriSwarming = (type, name) => {
+    let output = deepCopy(type);
+    output.LABEL = name || 'Bi-Swarming ' + output.LABEL;
+    output.STAT_NAMES = statNames.mixed;
+    output.GUNS = output.GUNS || [];
+    output.GUNS.push({
+        POSITION: [7, 7.5, 0.6, 7, 0, 45, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.autoswarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    }, {
+        POSITION: [7, 7.5, 0.6, 7, 0, -45, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.autoswarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    }, {
+        POSITION: [7, 7.5, 0.6, 7, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.swarm]),
+            TYPE: exports.autoswarm,
+            STAT_CALCULATOR: gunCalcNames.swarm
+        }
+    });
     return output;
 };
 const makeAuto = (type, name, options = {}) => {
@@ -557,7 +1047,33 @@ const makeDeco = (shape = 0, color = 16) => {
         SHAPE: shape,
         COLOR: color,
     };
-}
+};
+const addAura = (damageFactor = 1, sizeFactor = 1, opacity = 0.3, auraColor) => {
+    let isHeal = damageFactor < 0;
+    let auraType = isHeal ? "healAura" : "aura";
+    let symbolType = isHeal ? "healerSymbol" : "auraSymbol";
+    auraColor = auraColor || (isHeal ? 12 : 0);
+    return {
+        PARENT: [exports.genericTank],
+        INDEPENDENT: true,
+        LABEL: '',
+        COLOR: 17,
+        GUNS: [{
+            POSITION: [0, 20, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
+                TYPE: [exports[auraType], {COLOR: auraColor, ALPHA: opacity}],
+                MAX_CHILDREN: 1,
+                AUTOFIRE: true,
+                SYNCS_SKILLS: true
+            }
+        }],
+        TURRETS: [{
+            POSITION: [20 - 7.5 * isHeal, 0, 0, 0, 360, 1],
+            TYPE: [exports[symbolType], {COLOR: auraColor, INDEPENDENT: true}]
+        }]
+    };
+};
 
 // FOOD
 exports.hugePentagon = {
@@ -1060,7 +1576,7 @@ exports.autoTankGun = {
     BODY: {
         FOV: 3
     },
-    CONTROLLERS: ['canRepel', 'onlyAcceptInArc', 'mapAltToFire', 'nearestDifferentMaster'], 
+    CONTROLLERS: ['canRepel', 'onlyAcceptInArc', 'mapAltToFire', 'nearestDifferentMaster'],
     COLOR: 16,
     GUNS: [{
         POSITION: [22, 10, 1, 0, 0, 0, 0],
@@ -1396,14 +1912,107 @@ exports.testbed = {
         POSITION: [18, 10, -1.4, 0, 0, 0, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.basic, g.op]),
-            TYPE: [exports.bullet, {
-                SHAPE: 5
-            }]
+            TYPE: exports.developerBullet
+        }
+    }]
+};
+exports.auraBasicGen = addAura();
+exports.auraBasic = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Aura Basic',
+    DANGER: 4,
+	TURRETS: [{
+        POSITION: [14, 0, 0, 0, 0, 1],
+        TYPE: exports.auraBasicGen
+    }],
+    GUNS: [{
+        POSITION: [18, 8, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.whirlwindDeco = makeDeco(6);
+exports.whirlwindDeco.CONTROLLERS = [['spin', { independent: true, speed: 0.128 }]];
+exports.whirlwind = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Whirlwind',
+    ANGLE: 60,
+    CONTROLLERS: ['whirlwind'],
+    HAS_NO_RECOIL: true,
+    STAT_NAMES: statnames.whirlwind,
+    TURRETS: [{
+        POSITION: [8, 0, 0, 0, 360, 1],
+        TYPE: exports.whirlwindDeco
+    }],
+    AI: {
+        SPEED: 2,
+    },
+    GUNS: [{
+        POSITION: [1, 8, 0, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.satellite]), 
+            TYPE: [exports.satellite, { ANGLE: 0 }],
+            MAX_CHILDREN: 1,   
+            AUTOFIRE: true,  
+            SYNCS_SKILLS: false,
+            WAIT_TO_CYCLE: true
+        }
+    }, {
+        POSITION: [1, 8, 0, 0, 0, 0, 0.25],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.satellite]), 
+            TYPE: [exports.satellite, { ANGLE: 60 }],
+            MAX_CHILDREN: 1,   
+            AUTOFIRE: true,  
+            SYNCS_SKILLS: false,
+            WAIT_TO_CYCLE: true
+        }
+    }, {
+        POSITION: [1, 8, 0, 0, 0, 0, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.satellite]), 
+            TYPE: [exports.satellite, { ANGLE: 120 }],
+            MAX_CHILDREN: 1,   
+            AUTOFIRE: true,  
+            SYNCS_SKILLS: false,
+            WAIT_TO_CYCLE: true
+        }
+    }, {
+        POSITION: [1, 8, 0, 0, 0, 0, 0.75],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.satellite]), 
+            TYPE: [exports.satellite, { ANGLE: 180 }],
+            MAX_CHILDREN: 1,   
+            AUTOFIRE: true,  
+            SYNCS_SKILLS: false,
+            WAIT_TO_CYCLE: true
+        }
+    }, {
+        POSITION: [1, 8, 0, 0, 0, 0, 1],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.satellite]), 
+            TYPE: [exports.satellite, { ANGLE: 240 }],
+            MAX_CHILDREN: 1,   
+            AUTOFIRE: true,  
+            SYNCS_SKILLS: false,
+            WAIT_TO_CYCLE: true
+        }
+    }, {
+        POSITION: [1, 8, 0, 0, 0, 0, 1.25],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.satellite]), 
+            TYPE: [exports.satellite, { ANGLE: 300 }],
+            MAX_CHILDREN: 1,   
+            AUTOFIRE: true,  
+            SYNCS_SKILLS: false,
+            WAIT_TO_CYCLE: true
         }
     }]
 };
 
-// Misc.
+// Obstacles
 exports.rock = {
     TYPE: 'wall',
     DAMAGE_CLASS: 1,
@@ -1451,13 +2060,17 @@ exports.wall = {
     SHAPE: 'M 1 1 L -1 1 L -1 -1 L 1 -1 Z',
     VARIES_IN_SIZE: false
 };
+
+// DOMINATORS
 exports.dominationBody = {
     LABEL: '',
-    CONTROLLERS: ['dontTurn'], 
+    CONTROLLERS: ['spin'], 
     COLOR: 9,
     SHAPE: 6,
-    INDEPENDENT: true,
+    INDEPENDENT: true
 };
+
+// ENEMY UNITS
 exports.crasher = {
     TYPE: 'crasher',
     LABEL: 'Crasher',
@@ -1466,22 +2079,24 @@ exports.crasher = {
     SIZE: 5,
     VARIES_IN_SIZE: true,
     CONTROLLERS: ['nearestDifferentMaster', 'mapTargetToGoal'],
-    AI: { NO_LEAD: true, },
+    AI: {
+        NO_LEAD: true
+    },
     BODY: {
         SPEED: 5,
-        ACCEL: 0.01,
+        ACCELERATION: 1.4,
         HEALTH: 0.5,
         DAMAGE: 5,
         PENETRATION: 2,
         PUSHABILITY: 0.5,
         DENSITY: 10,
-        RESIST: 2,
+        RESIST: 2
     },
     MOTION_TYPE: 'motor',
     FACING_TYPE: 'smoothWithMotion',
     HITS_OWN_TYPE: 'hard',
     HAS_NO_MASTER: true,
-    DRAW_HEALTH: true,
+    DRAW_HEALTH: true
 };
 exports.crasherSpawner = {
     PARENT: [exports.genericTank],
@@ -1491,7 +2106,7 @@ exports.crasherSpawner = {
     COLOR: 5,
     INDEPENDENT: true,
     AI: {
-        chase: true,
+        chase: true
     },
     MAX_CHILDREN: 4,
     GUNS: [{
@@ -1544,7 +2159,7 @@ exports.sentry = {
     HITS_OWN_TYPE: 'hard',
     HAS_NO_MASTER: true,
     DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
+    GIVE_KILL_MESSAGE: true
 };
 exports.trapTurret = {
     PARENT: [exports.genericTank],
@@ -1572,18 +2187,41 @@ exports.trapTurret = {
 };
 exports.sentrySwarm = {
     PARENT: [exports.sentry],
-    DANGER: 3,
     GUNS: [{
-        POSITION: [    7,    14,    0.6,     7,     0,    180,     0,  ], 
+        POSITION: [7, 14, 0.6, 7, 0, 180, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.swarm, { recoil: 1.15 }]),
             TYPE: exports.swarm,
-            STAT_CALCULATOR: gunCalcNames.swarm,     
-        }, },
-    ],
+            STAT_CALCULATOR: gunCalcNames.swarm,
+        }
+    }]
 };
-exports.sentryGun = makeAuto(exports.sentry, 'Sentry', { type: exports.heavy3gun, size: 12, });
+exports.megaAutoTurret = {
+    PARENT: [exports.autoTurret],
+    BODY: {
+        FOV: 2,
+	SPEED: 0.9
+    },
+    CONTROLLERS: ['canRepel', 'onlyAcceptInArc', 'mapAltToFire', 'nearestDifferentMaster'],
+    GUNS: [{
+        POSITION: [22, 14, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pounder, g.autoTurret]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.sentryGun = makeAuto(exports.sentry, 'Sentry', { type: exports.megaAutoTurret, size: 12, });
 exports.sentryTrap = makeAuto(exports.sentry, 'Sentry', { type: exports.trapTurret, size: 12, });
+
+// BASE PROTECTOR
+exports.baseProtectBody = {
+    LABEL: '',
+    CONTROLLERS: ['spin'], 
+    COLOR: 9,
+    SHAPE: 8,
+    INDEPENDENT: true
+};
 exports.baseSwarmTurret = {
     PARENT: [exports.genericTank],
     LABEL: 'Protector',
@@ -1653,7 +2291,7 @@ exports.baseProtector = {
     FACING_TYPE: 'autospin',
     TURRETS: [{
         POSITION: [25, 0, 0, 0, 360, 0],
-        TYPE: exports.dominationBody
+        TYPE: exports.baseProtectBody
     }, {
         POSITION: [12, 7, 0, 45, 100, 0],
         TYPE: exports.baseSwarmTurret
@@ -1685,26 +2323,40 @@ exports.baseProtector = {
         POSITION: [4.5, 8.5, -1.5, 7, 0, 315, 0]
     }],
 };
+
+// BOTS
 exports.bot = {
-    AUTO_UPGRADE: 'random',
-    FACING_TYPE: 'looseToTarget',
+    ACCEPTS_SCORE: true,
+    FACING_TYPE: 'smoothToTarget',
     SIZE: 12,
-    //COLOR: 17,
-    CONTROLLERS: [
-        'nearestDifferentMaster', 'mapAltToFire', 'minion', 'fleeAtLowHealth'
-    ],
-    AI: { STRAFE: true, },
+    LEVEL: 45,
+    CONTROLLERS: ['nearestDifferentMaster', 'mapAltToFire', 'minion', 'fleeAtLowHealth'],
+    AI: {
+		STRAFE: true
+	}
+};
+exports.bot2 = {
+    ACCEPTS_SCORE: true,
+    FACING_TYPE: 'smoothToTarget',
+    SIZE: 12,
+    LEVEL: 45,
+    CONTROLLERS: ['nearestDifferentMaster', 'mapTargetToGoal', 'fleeAtLowHealth'],
+    AI: {
+		STRAFE: true
+	}
 };
 
 // BOSSES
 exports.miniboss = {
     PARENT: [exports.genericBoss],
-    CONTROLLERS: ["nearestDifferentMaster", "minion", "canRepel"],
-    AI: { NO_LEAD: true },
+    CONTROLLERS: ['nearestDifferentMaster', 'minion', 'canRepel'],
+    AI: {
+		NO_LEAD: true
+	}
 };
 exports.ramMiniboss = {
     PARENT: [exports.genericBoss],
-    CONTROLLERS: ["nearestDifferentMaster", "canRepel", "mapTargetToGoal"],
+    CONTROLLERS: ['nearestDifferentMaster', 'canRepel', 'mapTargetToGoal']
 };
 exports.elite = {
     PARENT: [exports.genericBoss],

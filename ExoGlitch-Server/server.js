@@ -44,11 +44,15 @@ const room = {
         square: c.WIDTH * c.HEIGHT / 100000000,
         linear: Math.sqrt(c.WIDTH * c.HEIGHT / 100000000),
     },
-    maxFood: c.WIDTH * c.HEIGHT / 20000 * c.FOOD_AMOUNT,
+    maxBots: c.BOTS,
+    maxFood: c.MAX_FOOD,
+    maxNestFood: c.MAX_NEST_FOOD,
+    maxCrashers: c.MAX_CRASHERS,
     isInRoom: location => {
         return location.x >= 0 && location.x <= c.WIDTH && location.y >= 0 && location.y <= c.HEIGHT
     },    
     topPlayerID: -1,
+    arenaClosed: false,
 };
     room.findType = type => {
         let output = [];
@@ -1097,7 +1101,7 @@ class Skill {
 
 const lazyRealSizes = (() => {
     let o = [1, 1, 1]; 
-    for (var i=3; i<16; i++) {
+    for (var i=3; i<17; i++) {
         // We say that the real size of a 0-gon, 1-gon, 2-gon is one, then push the real sizes of triangles, squares, etc...
         o.push(
             Math.sqrt((2 * Math.PI / i) * (1 / Math.sin(2 * Math.PI / i)))
@@ -1490,7 +1494,7 @@ var bringToLife = (() => {
     };
     return my => {
         // Size
-        if (my.SIZE - my.coreSize) my.coreSize += (my.SIZE - my.coreSize) / 100;
+        if (my.SIZE - my.coreSize) my.coreSize = my.SIZE;
         // Think 
         let faucet = (my.settings.independent || my.source == null || my.source === my) ? {} : my.source.control;
         let b = {
@@ -1507,10 +1511,25 @@ var bringToLife = (() => {
         }
         // Invisibility
         if (my.invisible[1]) {
-          my.alpha = Math.max(0, my.alpha - my.invisible[1])
-          if (!my.velocity.isShorterThan(0.1) || my.damageReceived)
-            my.alpha = Math.min(1, my.alpha + my.invisible[0])
-        }
+            if (my.invisible[2] <= my.alpha && my.alpha >= 0) {
+                my.alpha = Math.max(0.01, my.alpha - my.invisible[1]);
+            }
+            if (my.invisible[0] != 3) {
+                if (!(my.velocity.x * my.velocity.x + my.velocity.y * my.velocity.y < 0.15 * 0.15) || my.damageRecieved)
+                    my.alpha = Math.min(1, my.alpha + my.invisible[0]);
+            } else {
+                if (my.damageRecieved == 1) {
+                    my.alpha = 1
+                } else {
+                    if (my.invisible[2] <= my.alpha && my.alpha >= 0) {
+                        my.alpha = Math.max(0.01, my.alpha - my.invisible[1])
+                    }
+                }
+            }
+            if (my.invisible[0] == 2) {
+                my.alpha = my.invisible[2]
+            }
+        };
         // So we start with my master's thoughts and then we filter them down through our control stack
         my.controllers.forEach(AI => {
             let a = AI.think(b);
@@ -1685,7 +1704,7 @@ class Entity {
         this.collisionArray = [];
         this.invuln = false;
         this.alpha = 1;
-        this.invisible = [0, 0];
+        this.invisible = [0, 0, 0];
         // Get a new unique id
         this.id = entitiesIdLog++;
         this.team = this.id;
@@ -2008,6 +2027,28 @@ class Entity {
                     o.bindToMaster(def.POSITION, this);
             });
         }
+        if(this.evolutionTimeout) clearTimeout(this.evolutionTimeout);
+        if (set.EVOLUTIONS != null){
+            this.evolutionTimeout = setTimeout(()=>{
+                try {
+                    if (!this.isAlive()) {
+                        return
+                    }
+                    let options = [];
+                    let chances = [];
+                    for (let arr of set.EVOLUTIONS) {
+                        options.push(arr[0])
+                        chances.push(arr[1])
+                    }
+                    if (Math.random() < c.EVOLVE_HALT_CHANCE) {
+                        return
+                    }
+                    this.define(Class[options[ran.chooseChance(...chances)]])
+                }catch(err){
+                    util.error("Error while trying to evolve something else")
+                }
+            }, (c.EVOLVE_TIME + Math.random() * c.EVOLVE_TIME_RAN_ADDER)) // Crashers evolve 2x as fast
+        }
         if (set.mockup != null) {
             this.mockup = set.mockup;
         }
@@ -2284,6 +2325,72 @@ class Entity {
             break;
         case 'assembler':
             this.SIZE += 0.17;
+            break;
+        case 'desmos':
+            this.damp = 0;
+            if (this.waveReversed == null) this.waveReversed = this.master.control.alt ? -1 : 1;
+            if (this.waveAngle == null) {
+                this.waveAngle = this.master.facing;
+                this.velocity.x = this.velocity.length * Math.cos(this.waveAngle);
+                this.velocity.y = this.velocity.length * Math.sin(this.waveAngle);;
+            }
+            this.x += Math.cos(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 4 * 2)) - Math.sin(this.waveAngle) * (15 * Math.cos((this.RANGE - this.range) / 4) * this.waveReversed * (1));
+            this.y += Math.sin(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 4 * 2)) + Math.cos(this.waveAngle) * (15 * Math.cos((this.RANGE - this.range) / 4) * this.waveReversed * (1));
+            break;
+        case 'desmosReverse':
+            this.damp = 0;
+            if (this.waveReversed == null) this.waveReversed = this.master.control.alt ? -1 : 1;
+            if (this.waveAngle == null) {
+                this.waveAngle = this.master.facing;
+                this.velocity.x = this.velocity.length * Math.cos(this.waveAngle);
+                this.velocity.y = this.velocity.length * Math.sin(this.waveAngle);;
+            }
+            this.x += Math.cos(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 4 * 2)) - Math.sin(this.waveAngle) * (15 * Math.cos((this.RANGE - this.range) / 4) * this.waveReversed * (-1));
+            this.y += Math.sin(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 4 * 2)) + Math.cos(this.waveAngle) * (15 * Math.cos((this.RANGE - this.range) / 4) * this.waveReversed * (-1));
+            break;
+        case 'quadruplex1':
+            this.damp = 0;
+            if (this.waveReversed == null) this.waveReversed = this.master.control.alt ? -1 : 1;
+            if (this.waveAngle == null) {
+                this.waveAngle = this.master.facing;
+                this.velocity.x = this.velocity.length * Math.cos(this.waveAngle);
+                this.velocity.y = this.velocity.length * Math.sin(this.waveAngle);;
+            }
+            this.x += Math.cos(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 4 * 2)) - Math.sin(this.waveAngle) * (25 * Math.cos((this.RANGE - this.range) / 4) * this.waveReversed * (1));
+            this.y += Math.sin(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 4 * 2)) + Math.cos(this.waveAngle) * (25 * Math.cos((this.RANGE - this.range) / 4) * this.waveReversed * (1));
+            break;
+        case 'quadruplex2':
+            this.damp = 0;
+            if (this.waveReversed == null) this.waveReversed = this.master.control.alt ? -1 : 1;
+            if (this.waveAngle == null) {
+                this.waveAngle = this.master.facing;
+                this.velocity.x = this.velocity.length * Math.cos(this.waveAngle);
+                this.velocity.y = this.velocity.length * Math.sin(this.waveAngle);;
+            }
+            this.x += Math.cos(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 4 * 2)) - Math.sin(this.waveAngle) * (25 * Math.cos((this.RANGE - this.range) / 4) * this.waveReversed * (-1));
+            this.y += Math.sin(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 4 * 2)) + Math.cos(this.waveAngle) * (25 * Math.cos((this.RANGE - this.range) / 4) * this.waveReversed * (-1));
+            break;
+        case 'quadruplex3':
+            this.damp = 0;
+            if (this.waveReversed == null) this.waveReversed = this.master.control.alt ? -1 : 1;
+            if (this.waveAngle == null) {
+                this.waveAngle = this.master.facing;
+                this.velocity.x = this.velocity.length * Math.cos(this.waveAngle);
+                this.velocity.y = this.velocity.length * Math.sin(this.waveAngle);;
+            }
+            this.x += Math.cos(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 7 * 2)) - Math.sin(this.waveAngle) * (10 * Math.cos((this.RANGE - this.range) / 7) * this.waveReversed * (1));
+            this.y += Math.sin(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 7 * 2)) + Math.cos(this.waveAngle) * (10 * Math.cos((this.RANGE - this.range) / 7) * this.waveReversed * (1));
+            break;
+        case 'quadruplex4':
+            this.damp = 0;
+            if (this.waveReversed == null) this.waveReversed = this.master.control.alt ? -1 : 1;
+            if (this.waveAngle == null) {
+                this.waveAngle = this.master.facing;
+                this.velocity.x = this.velocity.length * Math.cos(this.waveAngle);
+                this.velocity.y = this.velocity.length * Math.sin(this.waveAngle);;
+            }
+            this.x += Math.cos(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 7 * 2)) - Math.sin(this.waveAngle) * (10 * Math.cos((this.RANGE - this.range) / 7) * this.waveReversed * (-1));
+            this.y += Math.sin(this.waveAngle) * (this.maxSpeed * 5 * Math.cos((this.RANGE - this.range) / 7 * 2)) + Math.cos(this.waveAngle) * (10 * Math.cos((this.RANGE - this.range) / 7) * this.waveReversed * (-1));
             break;
         }
         this.accel.x += engine.x * this.control.power;
@@ -2565,10 +2672,16 @@ class Entity {
         // Remove from the collision grid
         this.removeFromGrid();
         this.isGhost = true;
-    }    
-    
+        // Evolve stuff
+        if (this.evolutionTimeout) {
+            clearTimeout(this.evolutionTimeout)
+        }
+    }
     isDead() {
         return this.health.amount <= 0; 
+    }
+    isAlive() {
+        return this.health.amount > 0;
     }
 }
 
@@ -4691,9 +4804,9 @@ var maintainloop = (() => {
         };
     })();
     let spawnCrasher = census => {
-        if (ran.chance(1 -  0.5 * census.crasher / room.maxFood / room.nestFoodAmount)) {
-            let spot, i = 30;
-            do { spot = room.randomType('nest'); i--; if (!i) return 0; } while (dirtyCheck(spot, 100));
+        if (ran.chance(1 -  0.25 * census.crasher)) {
+            let spot, i = 10;
+            do { spot = room.randomType('nest'); i--; if (!i) return 0; } while (dirtyCheck(spot, 30));
             let type = Class.crasher;
             let o = new Entity(spot);
                 o.define(type);
@@ -4732,12 +4845,39 @@ var maintainloop = (() => {
             // Bots
                 if (bots.length < c.BOTS) {
                     let o = new Entity(room.random());
-                    o.color = 17;
-                    o.define(Class.bot);
-                    o.define(Class.basic);
-                    o.name += ran.chooseBotName();
+                    o.color = 12;
+                    let tank = ran.choose([Class.basic]),
+                        botType = (tank.IS_SMASHER) ? "bot2" : "bot",
+                        skillSet = tank.IS_SMASHER ? ran.choose([
+                            [12, 12, 11, 11, 11, 11, 0, 12, 0, 6],
+                            [10, 12, 11, 11, 11, 11, 0, 10, 3, 7],
+                            [9, 11, 11, 11, 11, 11, 4, 8, 1, 5],
+                        ]) : ran.choose([ // Dupes act as a weight system lo
+                            [0, 0, 4, 8, 8, 9, 8, 5, 0, 0],
+                            [0, 0, 5, 9, 9, 9, 9, 1, 0, 0],
+                            [0, 0, 8, 7, 7, 8, 5, 7, 0, 0],
+                            [2, 4, 2, 7, 6, 9, 6, 5, 0, 1],
+                            [0, 0, 8, 9, 9, 9, 0, 7, 0, 0],
+                            [0, 0, 4, 8, 8, 9, 8, 5, 0, 0],
+                            [0, 0, 5, 9, 9, 9, 9, 1, 0, 0],
+                            [0, 0, 8, 7, 7, 8, 5, 7, 0, 0],
+                            [0, 0, 5, 9, 9, 9, 9, 1, 0, 0],
+                            [0, 0, 8, 7, 7, 8, 5, 7, 0, 0],
+                            [2, 4, 2, 7, 6, 9, 6, 5, 0, 1],
+                            [0, 0, 8, 9, 9, 9, 0, 7, 0, 0],
+                            [0, 0, 8, 9, 9, 9, 0, 7, 0, 0],
+                            [4, 4, 2, 7, 7, 7, 3, 8, 0, 0],
+                        ]);
+                    o.define(Class[botType]);
+                    o.define(tank);
+                    o.name = "[AI] " + ran.chooseBotName();
+                    o.skill.score = 26302 + Math.floor(10000 * Math.random());
+                    o.fov *= 0.85;
                     o.refreshBodyAttributes();
-                    o.color = 17;
+                    o.skill.set([skillSet[6], skillSet[4], skillSet[3], skillSet[5], skillSet[2], skillSet[9], skillSet[0], skillSet[1], skillSet[8], skillSet[7]].map(value => {
+                        if (value < 9 && Math.random() > 0.85) value += 1;
+                        return value
+                    }));
                     bots.push(o);
                 }
                 // Remove dead ones
@@ -4752,220 +4892,74 @@ var maintainloop = (() => {
         };
     })();
     // The big food function
-    let makefood = (() => {
-        let food = [], foodSpawners = [];
-        // The two essential functions
-        function getFoodClass(level) {
-            let a = { };
-            switch (level) {
-                case 0: a = Class.egg; break;
-                case 1: a = Class.square; break;
-                case 2: a = Class.triangle; break;
-                case 3: a = Class.pentagon; break;
-                case 4: a = Class.bigPentagon; break;
-                case 5: a = Class.hugePentagon; break;
-                default: throw('bad food level');
-            }
-            if (a !== {}) {
-                a.BODY.ACCELERATION = 0.015 / (a.FOOD.LEVEL + 1);
-            }
-            return a;
-        }
-        let placeNewFood = (position, scatter, level, allowInNest = false) => {
-            let o = nearest(food, position); 
-            let mitosis = false;
-            let seed = false;
-            // Find the nearest food and determine if we can do anything with it
-            if (o != null) {
-                for (let i=50; i>0; i--) {
-                    if (scatter == -1 || util.getDistance(position, o) < scatter) {
-                        if (ran.dice((o.foodLevel + 1) * (o.foodLevel + 1))) {
-                            mitosis = true; break;
-                        } else {
-                            seed = true; break;
-                        }
-                    }
-                }
-            }
-            // Decide what to do
-            if (scatter != -1 || mitosis || seed) {
-                // Splitting
-                if (o != null && (mitosis || seed) && room.isIn('nest', o) === allowInNest) {
-                    let levelToMake = (mitosis) ? o.foodLevel : level,
-                        place = {
-                        x: o.x + o.size * Math.cos(o.facing),
-                        y: o.y + o.size * Math.sin(o.facing),
-                    };
-                    let new_o = new Entity(place);
-                        new_o.define(getFoodClass(levelToMake));
-                        new_o.team = -100;
-                    new_o.facing = o.facing + ran.randomRange(Math.PI/2, Math.PI);
-                    food.push(new_o);
-                    return new_o;
-                }
-                // Brand new
-                else if (room.isIn('nest', position) === allowInNest) {
-                    if (!dirtyCheck(position, 20)) {
-                        o = new Entity(position);
-                            o.define(getFoodClass(level));
-                            o.team = -100;
-                        o.facing = ran.randomAngle();
-                        food.push(o);
-                        return o;
-                    }
-                }
-            }
+    const createFood = (() => {
+        function spawnSingle(location, type, id) {
+            let o = new Entity(location);
+            o.define(Class[type]);
+            // o.ACCELERATION = 0.015 / (o.SIZE * 0.2);
+            o.facing = ran.randomAngle();
+            o.team = -100;
+            o.PUSHABILITY *= 0.5;
+            o.refreshBodyAttributes();
+            return o;
         };
-        // Define foodspawners
-        class FoodSpawner {
-            constructor() {
-                this.foodToMake = Math.ceil(Math.abs(ran.gauss(0, room.scale.linear*80)));
-                this.size = Math.sqrt(this.foodToMake) * 25;
-            
-                // Determine where we ought to go
-                let position = {}; let o;
-                do { 
-                    position = room.gaussRing(1/3, 20); 
-                    o = placeNewFood(position, this.size, 0);
-                } while (o == null);
-        
-                // Produce a few more
-                for (let i=Math.ceil(Math.abs(ran.gauss(0, 4))); i<=0; i--) {
-                    placeNewFood(o, this.size, 0);
-                }
-        
-                // Set location
-                this.x = o.x;
-                this.y = o.y;
-                //util.debug('FoodSpawner placed at ('+this.x+', '+this.y+'). Set to produce '+this.foodToMake+' food.');
-            }        
-            rot() {
-                if (--this.foodToMake < 0) {
-                    //util.debug('FoodSpawner rotted, respawning.');
-                    util.remove(foodSpawners, foodSpawners.indexOf(this));
-                    foodSpawners.push(new FoodSpawner());
-                }
+        function spawnFood(id){
+            let location, i = 8;
+            do {
+                if (!i--) return;
+                location = room.random();
+            }while (dirtyCheck(location, 100) && room.isIn("nest", location));
+
+            // Spawn groups of food
+            for (let i = 0, amount = (Math.random() * 20); i < amount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                spawnSingle({
+                x: location.x + Math.cos(angle) * (Math.random() * 50),
+                y: location.y + Math.sin(angle) * (Math.random() * 50)
+                }, ran.choose(['egg', 'square', 'triangle', 'pentagon']), id);
             }
         }
-        // Add them
-        foodSpawners.push(new FoodSpawner());
-        foodSpawners.push(new FoodSpawner());
-        foodSpawners.push(new FoodSpawner());
-        foodSpawners.push(new FoodSpawner());
-        // Food making functions 
-        let makeGroupedFood = () => { // Create grouped food
-            // Choose a location around a spawner
-            let spawner = foodSpawners[ran.irandom(foodSpawners.length - 1)],
-                bubble = ran.gaussRing(spawner.size, 1/4);
-            placeNewFood({ x: spawner.x + bubble.x, y: spawner.y + bubble.y, }, -1, 0);
-            spawner.rot();
-        };
-        let makeDistributedFood = () => { // Distribute food everywhere
-            //util.debug('Creating new distributed food.');
-            let spot = {};
-            do { spot = room.gaussRing(1/2, 2); } while (room.isInNorm(spot));
-            placeNewFood(spot, 0.01 * room.width, 0);
-        };
-        let makeCornerFood = () => { // Distribute food in the corners
-            let spot = {};
-            do { spot = room.gaussInverse(5); } while (room.isInNorm(spot));
-            placeNewFood(spot, 0.05 * room.width, 0);
-        };
-        let makeNestFood = () => { // Make nest pentagons
-            let spot = room.randomType('nest');
-            placeNewFood(spot, 0.01 * room.width, 3, true);
-        };
-        // Return the full function
+        function spawnNestFood(id) {
+            let location, i = 8;
+            do {
+                if (!i--) return;
+                location = room.randomType("nest");
+            } while (dirtyCheck(location, 100))
+            let shape = spawnSingle(location, ran.choose(['pentagon', 'hexagon']), id);
+            shape.isNestFood = true;
+        }
         return () => {
-            // Find and understand all food
-            let census = {
-                [0]: 0, // Egg
-                [1]: 0, // Square
-                [2]: 0, // Triangle
-                [3]: 0, // Penta
-                [4]: 0, // Beta
-                [5]: 0, // Alpha
-                [6]: 0,
-                tank: 0,
-                sum: 0,
-            };
-            let censusNest = {
-                [0]: 0, // Egg
-                [1]: 0, // Square
-                [2]: 0, // Triangle
-                [3]: 0, // Penta
-                [4]: 0, // Beta
-                [5]: 0, // Alpha
-                [6]: 0,
-                sum: 0,
-            };
-            // Do the censusNest
-            food = entities.map(instance => {
-                try {
-                    if (instance.type === 'tank') {
-                        census.tank++;
-                    } else if (instance.foodLevel > -1) { 
-                        if (room.isIn('nest', { x: instance.x, y: instance.y, })) { censusNest.sum++; censusNest[instance.foodLevel]++; }
-                        else { census.sum++; census[instance.foodLevel]++; }
-                        return instance;
-                    }
-                } catch (err) { util.error(instance.label); util.error(err); instance.kill(); }
-            }).filter(e => { return e; });     
-            // Sum it up   
-            let maxFood = 1 + room.maxFood + 15 * census.tank;      
-            let maxNestFood = 1 + room.maxFood * room.nestFoodAmount;
-            let foodAmount = census.sum;
-            let nestFoodAmount = censusNest.sum;
-            /*********** ROT OLD SPAWNERS **********/
-            foodSpawners.forEach(spawner => { if (ran.chance(1 - foodAmount/maxFood)) spawner.rot(); });
-            /************** MAKE FOOD **************/
-            while (ran.chance(0.8 * (1 - foodAmount * foodAmount / maxFood / maxFood))) {
-                switch (ran.chooseChance(10, 2, 1)) {
-                case 0: makeGroupedFood(); break;
-                case 1: makeDistributedFood(); break;
-                case 2: makeCornerFood(); break;
-                }
-            } 
-            while (ran.chance(0.5 * (1 - nestFoodAmount * nestFoodAmount / maxNestFood / maxNestFood))) makeNestFood();
-            /************* UPGRADE FOOD ************/
-            if (!food.length) return 0;
-            for (let i=Math.ceil(food.length / 100); i>0; i--) {
-                let o = food[ran.irandom(food.length - 1)], // A random food instance
-                    oldId = -1000,
-                    overflow, location;
-                // Bounce 6 times
-                for (let j=0; j<6; j++) { 
-                    overflow = 10;
-                    // Find the nearest one that's not the last one
-                    do { o = nearest(food, { x: ran.gauss(o.x, 30), y: ran.gauss(o.y, 30), });
-                    } while (o.id === oldId && --overflow);        
-                    if (!overflow) continue;
-                    // Configure for the nest if needed
-                    let proportions = c.FOOD,
-                        cens = census,
-                        amount = foodAmount;
-                    if (room.isIn('nest', o)) {
-                        proportions = c.FOOD_NEST;
-                        cens = censusNest;
-                        amount = nestFoodAmount;
-                    }
-                    // Upgrade stuff
-                    o.foodCountup += Math.ceil(Math.abs(ran.gauss(0, 10)));
-                    while (o.foodCountup >= (o.foodLevel + 1) * 100) {
-                        o.foodCountup -= (o.foodLevel + 1) * 100;
-                        if (ran.chance(1 - cens[o.foodLevel + 1] / amount / proportions[o.foodLevel + 1])) {
-                            o.define(getFoodClass(o.foodLevel + 1));
+            // NORMAL GAMEMODE CENSUS
+            const census = (() => {
+                let food = 0;
+                let nestFood = 0;
+                entities.forEach(instance => {
+                    if (instance.type === "food") {
+                        if (instance.isNestFood){
+                            nestFood++;
+                        }else{
+                            food++;
                         }
                     }
-                }
+                });
+                return {
+                    food,
+                    nestFood
+                };
+            })();
+            if (census.food < room.maxFood) {
+                spawnFood();
+            }
+            if (census.nestFood < room.maxNestFood) {
+                spawnNestFood();
             }
         };
     })();
     // Define food and food spawning
     return () => {
         // Do stuff
-        makenpcs();      
-        makefood(); 
+        makenpcs();
+        createFood(); 
         // Regen health and update the grid
         entities.forEach(instance => {
             if (instance.shield.max) {

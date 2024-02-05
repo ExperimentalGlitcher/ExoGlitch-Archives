@@ -452,8 +452,8 @@ exports.satellite = {
     ACCEPTS_SCORE: false,
     DANGER: 2,
     SHAPE: 0,
-  	CONTROLLERS: ['orbit'],
-  	FACING_TYPE: 'autospin',
+    CONTROLLERS: ['orbit'],
+    FACING_TYPE: 'autospin',
     BODY: {
         PENETRATION: 1.2,
         PUSHABILITY: 0.6,

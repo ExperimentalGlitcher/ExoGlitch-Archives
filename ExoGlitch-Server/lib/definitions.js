@@ -3251,21 +3251,114 @@ exports.basic.UPGRADES_TIER_1 = [];
 
 // EVOLUTIONS
 exports.egg.EVOLUTIONS = [
-    ['square', 99.95], ['gem', 0.05]
+    ['square', 99.95-1/50-1/1000-1/3000-1/76000-1/152000-1/570000], ['gem', 0.05], ['shinyEgg', 1/50], ['legendaryEgg', 1/1000], ['shadowEgg', 1/3000],
+    ['rainbowEgg', 1/76000], ['transgenderEgg', 1/152000], ['sphere', 1/570000]
 ];
 exports.gem.EVOLUTIONS = [
     ['jewel', 100]
 ];
 exports.jewel.EVOLUTIONS = [];
+exports.shinyEgg.EVOLUTIONS = [
+    ['shinySquare', 100]
+];
 exports.square.EVOLUTIONS = [
-    ['triangle', 100]
+    ['triangle', 100-1/50-1/1000-1/3000-1/76000-1/152000-1/570000], ['shinySquare', 1/50], ['legendarySquare', 1/1000], ['shadowSquare', 1/3000],
+    ['rainbowSquare', 1/76000], ['transgenderSquare', 1/152000], ['cube', 1/570000]
+];
+exports.shinySquare.EVOLUTIONS = [
+    ['shinyTriangle', 100]
+];
+exports.legendarySquare.EVOLUTIONS = [
+    ['legendaryTriangle', 100]
+];
+exports.shadowSquare.EVOLUTIONS = [
+    ['shadowTriangle', 100]
+];
+exports.rainbowSquare.EVOLUTIONS = [
+    ['rainbowTriangle', 100]
+];
+exports.transgenderSquare.EVOLUTIONS = [
+    ['transgenderTriangle', 100]
 ];
 exports.triangle.EVOLUTIONS = [
-    ['pentagon', 100]
+    ['pentagon', 100-1/50-1/1000-1/3000-1/76000-1/152000-1/570000], ['shinyTriangle', 1/50], ['legendaryTriangle', 1/1000], ['shadowTriangle', 1/3000],
+    ['rainbowTriangle', 1/76000], ['transgenderTriangle', 1/152000], ['tetrahedron', 1/570000]
+];
+exports.shinyTriangle.EVOLUTIONS = [
+    ['shinyPentagon', 100]
+];
+exports.legendaryTriangle.EVOLUTIONS = [
+    ['legendaryPentagon', 100]
+];
+exports.shadowTriangle.EVOLUTIONS = [
+    ['shadowPentagon', 100]
+];
+exports.rainbowTriangle.EVOLUTIONS = [
+    ['rainbowPentagon', 100]
+];
+exports.transgenderTriangle.EVOLUTIONS = [
+    ['transgenderPentagon', 100]
 ];
 exports.pentagon.EVOLUTIONS = [
-    ['hexagon', 100]
+    ['hexagon', 100-1/50-1/1000-1/3000-1/76000-1/152000-1/570000], ['shinyPentagon', 1/50], ['legendaryPentagon', 1/1000], ['shadowPentagon', 1/3000],
+    ['rainbowPentagon', 1/76000], ['transgenderPentagon', 1/152000], ['dodecahedron', 1/570000]
 ];
-exports.betaPentagon.EVOLUTIONS = [];
-exports.alphaPentagon.EVOLUTIONS = [];
-exports.hexagon.EVOLUTIONS = [];
+exports.shinyPentagon.EVOLUTIONS = [
+    ['shinyHexagon', 100]
+];
+exports.legendaryPentagon.EVOLUTIONS = [
+    ['legendaryHexagon', 100]
+];
+exports.shadowPentagon.EVOLUTIONS = [
+    ['shadowHexagon', 100]
+];
+exports.rainbowPentagon.EVOLUTIONS = [
+    ['rainbowHexagon', 100]
+];
+exports.transgenderPentagon.EVOLUTIONS = [
+    ['transgenderHexagon', 100]
+];
+exports.betaPentagon.EVOLUTIONS = [
+    ['betaPentagon', 100-1/50-1/1000-1/3000-1/76000-1/152000], ['shinyBetaPentagon', 1/50], ['legendaryBetaPentagon', 1/1000], ['shadowBetaPentagon', 1/3000],
+    ['rainbowBetaPentagon', 1/76000], ['transgenderBetaPentagon', 1/152000]
+];
+exports.shinyBetaPentagon.EVOLUTIONS = [];
+exports.legendaryBetaPentagon.EVOLUTIONS = [];
+exports.shadowBetaPentagon.EVOLUTIONS = [];
+exports.rainbowBetaPentagon.EVOLUTIONS = [];
+exports.transgenderBetaPentagon.EVOLUTIONS = [];
+exports.alphaPentagon.EVOLUTIONS = [
+    ['alphaPentagon', 100-1/50-1/1000-1/3000-1/76000-1/152000], ['shinyAlphaPentagon', 1/50], ['legendaryAlphaPentagon', 1/1000], ['shadowAlphaPentagon', 1/3000],
+    ['rainbowAlphaPentagon', 1/76000], ['transgenderAlphaPentagon', 1/152000]
+];
+exports.shinyAlphaPentagon.EVOLUTIONS = [];
+exports.legendaryAlphaPentagon.EVOLUTIONS = [];
+exports.shadowAlphaPentagon.EVOLUTIONS = [];
+exports.rainbowAlphaPentagon.EVOLUTIONS = [];
+exports.transgenderAlphaPentagon.EVOLUTIONS = [];
+exports.hexagon.EVOLUTIONS = [
+    ['hexagon', 100-1/50-1/1000-1/3000-1/76000-1/152000-1/570000], ['shinyHexagon', 1/50], ['legendaryHexagon', 1/1000], ['shadowHexagon', 1/3000],
+    ['rainbowHexagon', 1/76000], ['transgenderHexagon', 1/152000], ['icosahedron', 1/570000]
+];
+exports.shinyHexagon.EVOLUTIONS = [];
+exports.legendaryHexagon.EVOLUTIONS = [];
+exports.shadowHexagon.EVOLUTIONS = [];
+exports.rainbowHexagon.EVOLUTIONS = [];
+exports.transgenderHexagon.EVOLUTIONS = [];
+exports.sphere.EVOLUTIONS = [
+    ['cube', 100]
+];
+exports.cube.EVOLUTIONS = [
+    ['tetrahedron', 99],
+    ['tesseract', 1]
+];
+exports.tetrahedron.EVOLUTIONS = [
+    ['octahedron', 50],
+    ['dodecahedron', 50]
+];
+exports.octahedron.EVOLUTIONS = [];
+exports.dodecahedron.EVOLUTIONS = [
+    ['icosahedron', 100]
+];
+exports.icosahedron.EVOLUTIONS = [];
+exports.tesseract.EVOLUTIONS = [];

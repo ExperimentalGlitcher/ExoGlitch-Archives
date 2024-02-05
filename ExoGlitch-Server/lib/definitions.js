@@ -380,7 +380,7 @@ exports.growBullet = {
 };
 exports.flare = {
     PARENT: [exports.growBullet],
-	LABEL: 'Flare',
+	  LABEL: 'Flare',
     SHAPE: 4,
     MOTION_TYPE: 'flare'
 };
@@ -450,10 +450,10 @@ exports.satellite = {
     LABEL: 'Satellite',
     TYPE: 'satellite',
     ACCEPTS_SCORE: false,
-	DANGER: 2,
+	  DANGER: 2,
     SHAPE: 0,
-	CONTROLLERS: ['orbit'],
-	FACING_TYPE: 'autospin',
+  	CONTROLLERS: ['orbit'],
+  	FACING_TYPE: 'autospin',
     BODY: {
         PENETRATION: 1.2,
         PUSHABILITY: 0.6,
@@ -591,7 +591,7 @@ const applyStats = (guns, stats, options = {}) => {
 const makeGuard = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || output.LABEL + ' Guard';
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [13, 8, 1, 0, 0, 180, 0],
@@ -608,7 +608,7 @@ const makeGuard = (type, name) => {
 const makeConq = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || output.LABEL + ' Conqueror';
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [18, 14, 1, 0, 0, 180, 0],
@@ -637,7 +637,7 @@ const makeSplit = (type, name) => {
 const addBackGunner = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || output.LABEL;
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [19, 2, 1, 0, -2.5, 180, 0],
@@ -779,7 +779,7 @@ const makeHybrid = (type, name, options = {
 const makeOver = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || 'Over' + output.LABEL.toLowerCase();
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [6, 12, 1.2, 8, 0, 125, 0],
@@ -809,7 +809,7 @@ const makeOver = (type, name) => {
 const makeOversplit = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || 'Over' + output.LABEL.toLowerCase();
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [6, 12, 1.2, 8, 0, 90, 0],
@@ -839,7 +839,7 @@ const makeOversplit = (type, name) => {
 const makeBattle = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || 'Battle' + output.LABEL.toLowerCase();
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [7, 7.5, 0.6, 7, 4, 125, 0],
@@ -875,7 +875,7 @@ const makeBattle = (type, name) => {
 const makeCap = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || 'Cap' + output.LABEL.toLowerCase();
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [4.5, 10, 1, 10.5, 0, 125, 0]
@@ -911,7 +911,7 @@ const makeCap = (type, name) => {
 const makeCross = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || 'Cross-' + output.LABEL;
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [6, 12, 1.2, 8, 0, 90, 0],
@@ -952,7 +952,7 @@ const makeCross = (type, name) => {
 const makeSwarming = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || 'Swarming ' + output.LABEL;
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [7, 7.5, 0.6, 7, 0, 0, 0],
@@ -967,7 +967,7 @@ const makeSwarming = (type, name) => {
 const makeBiSwarming = (type, name) => {
     let output = deepCopy(type);
     output.LABEL = name || 'Bi-Swarming ' + output.LABEL;
-    output.STAT_NAMES = statNames.mixed;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [7, 7.5, 0.6, 7, 0, 25, 0],
@@ -988,8 +988,8 @@ const makeBiSwarming = (type, name) => {
 };
 const makeTriSwarming = (type, name) => {
     let output = deepCopy(type);
-    output.LABEL = name || 'Bi-Swarming ' + output.LABEL;
-    output.STAT_NAMES = statNames.mixed;
+    output.LABEL = name || 'Tri-Swarming ' + output.LABEL;
+    output.STAT_NAMES = statnames.mixed;
     output.GUNS = output.GUNS || [];
     output.GUNS.push({
         POSITION: [7, 7.5, 0.6, 7, 0, 45, 0],
@@ -1582,7 +1582,7 @@ exports.betaPentagon = {
         ACCELERATION: 0.0035
     },
     DRAW_HEALTH: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: exports.pentagonFoodProp
     }]
@@ -1604,7 +1604,7 @@ exports.shinyBetaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 1 }]
     }]
@@ -1626,7 +1626,7 @@ exports.legendaryBetaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 0 }]
     }]
@@ -1649,7 +1649,7 @@ exports.shadowBetaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 19 }]
     }]
@@ -1671,7 +1671,7 @@ exports.rainbowBetaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 36 }]
     }]
@@ -1693,7 +1693,7 @@ exports.transgenderBetaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+  	TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 37 }]
     }]
@@ -1715,7 +1715,7 @@ exports.alphaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: exports.pentagonFoodProp
     }, {
@@ -1740,7 +1740,7 @@ exports.shinyAlphaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 1 }]
     }, {
@@ -1765,7 +1765,7 @@ exports.legendaryAlphaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 0 }]
     }, {
@@ -1791,7 +1791,7 @@ exports.shadowAlphaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 19 }]
     }, {
@@ -1816,7 +1816,7 @@ exports.rainbowAlphaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 36 }]
     }, {
@@ -1841,7 +1841,7 @@ exports.transgenderAlphaPentagon = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-	TURRETS: [{
+	  TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 37 }]
     }, {
@@ -2000,7 +2000,7 @@ exports.cube = {
     VALUE: 2e7,
     SIZE: 10,
     COLOR: 18,
-	SHAPE: 'M 0.0575 0.0437 V 0.9921 L 0.8869 0.5167 V -0.4306 L 0.0575 0.0437 Z M -0.0583 0.0437 V 0.9921 L -0.8869 0.5159 V -0.4306 L -0.0583 0.0437 Z M 0 -0.0556 L 0.829 -0.5266 L 0 -1 L -0.8254 -0.527 L 0 -0.0556',
+	  SHAPE: 'M 0.0575 0.0437 V 0.9921 L 0.8869 0.5167 V -0.4306 L 0.0575 0.0437 Z M -0.0583 0.0437 V 0.9921 L -0.8869 0.5159 V -0.4306 L -0.0583 0.0437 Z M 0 -0.0556 L 0.829 -0.5266 L 0 -1 L -0.8254 -0.527 L 0 -0.0556',
     BODY: {
         DAMAGE: 12,
         DENSITY: 20,
@@ -2019,7 +2019,7 @@ exports.tetrahedron = {
     VALUE: 3e7,
     SIZE: 12,
     COLOR: 18,
-	SHAPE: 'M 0.058 0.044 V 1 L 0.894 -0.434 L 0.058 0.044 Z M -0.0588 0.044 V 1 L -0.894 -0.434 L -0.0588 0.044 Z M 0 -0.056 L 0.8356 -0.5308 L -0.832 -0.5312 L 0 -0.056',
+	  SHAPE: 'M 0.058 0.044 V 1 L 0.894 -0.434 L 0.058 0.044 Z M -0.0588 0.044 V 1 L -0.894 -0.434 L -0.0588 0.044 Z M 0 -0.056 L 0.8356 -0.5308 L -0.832 -0.5312 L 0 -0.056',
     BODY: {
         DAMAGE: 15,
         DENSITY: 23,
@@ -2037,7 +2037,7 @@ exports.octahedron = {
     VALUE: 4e7,
     SIZE: 13,
     COLOR: 18,
-	SHAPE: 'M 0.06 -0.06 L 0.95 -0.06 L 0.06 -0.95 L 0.06 -0.06 M -0.06 0.06 L -0.06 0.95 L -0.95 0.06 L -0.06 0.06 M -0.06 -0.06 L -0.95 -0.06 L -0.06 -0.95 L -0.06 -0.06 M 0.06 0.06 L 0.06 0.95 L 0.95 0.06 L 0.06 0.06',
+	  SHAPE: 'M 0.06 -0.06 L 0.95 -0.06 L 0.06 -0.95 L 0.06 -0.06 M -0.06 0.06 L -0.06 0.95 L -0.95 0.06 L -0.06 0.06 M -0.06 -0.06 L -0.95 -0.06 L -0.06 -0.95 L -0.06 -0.06 M 0.06 0.06 L 0.06 0.95 L 0.95 0.06 L 0.06 0.06',
     BODY: {
         DAMAGE: 18,
         DENSITY: 26,
@@ -2055,7 +2055,7 @@ exports.dodecahedron = {
     VALUE: 5e7,
     SIZE: 18,
     COLOR: 18,
-	SHAPE: 'M -0.3273 -0.4318 H 0.3045 L 0.5068 0.1727 L -0.0091 0.5455 L -0.5227 0.1727 L -0.3273 -0.4318 Z M -0.6068 0.2682 L -0.0773 0.6545 V 0.9591 L -0.5955 0.7977 L -0.9136 0.3545 L -0.6068 0.2682 Z M 0.5909 0.2682 L 0.0523 0.6591 V 0.9636 L 0.5773 0.7955 L 0.8955 0.3545 L 0.5909 0.2682 Z M -0.65 0.1455 L -0.4477 -0.4818 L -0.6318 -0.7505 L -0.9545 -0.3182 V 0.2318 L -0.65 0.1455 Z M 0.4273 -0.4841 L 0.6318 0.1455 L 0.9341 0.2341 V -0.3136 L 0.6145 -0.7591 L 0.4273 -0.4841 Z M -0.0091 -1 L -0.5318 -0.8341 L -0.3455 -0.5609 H 0.3227 L 0.5159 -0.8314 L -0.0091 -1',
+	  SHAPE: 'M -0.3273 -0.4318 H 0.3045 L 0.5068 0.1727 L -0.0091 0.5455 L -0.5227 0.1727 L -0.3273 -0.4318 Z M -0.6068 0.2682 L -0.0773 0.6545 V 0.9591 L -0.5955 0.7977 L -0.9136 0.3545 L -0.6068 0.2682 Z M 0.5909 0.2682 L 0.0523 0.6591 V 0.9636 L 0.5773 0.7955 L 0.8955 0.3545 L 0.5909 0.2682 Z M -0.65 0.1455 L -0.4477 -0.4818 L -0.6318 -0.7505 L -0.9545 -0.3182 V 0.2318 L -0.65 0.1455 Z M 0.4273 -0.4841 L 0.6318 0.1455 L 0.9341 0.2341 V -0.3136 L 0.6145 -0.7591 L 0.4273 -0.4841 Z M -0.0091 -1 L -0.5318 -0.8341 L -0.3455 -0.5609 H 0.3227 L 0.5159 -0.8314 L -0.0091 -1',
     BODY: {
         DAMAGE: 17.5,
         DENSITY: 28,
@@ -2073,7 +2073,7 @@ exports.icosahedron = {
     VALUE: 1e8,
     SIZE: 20,
     COLOR: 18,
-	SHAPE: 'M 0 0.65 L -0.563 -0.325 L 0.563 -0.325 Z M -0.866 0.5 L -0.108 0.653 L -0.619 -0.233 Z M 0.679 -0.332 L 0.906 0.331 L 0.892 -0.455 Z M 0.627 -0.422 L 0.166 -0.95 L 0.84 -0.545 Z M 0.866 0.5 L 0.619 -0.233 L 0.108 0.653 Z M -0.627 -0.422 L -0.166 -0.95 L -0.84 -0.545 Z M -0.679 -0.332 L -0.906 0.331 L -0.892 -0.455 Z M 0 -1 L -0.511 -0.42 L 0.511 -0.42 Z M -0.052 0.754 L -0.74 0.619 L -0.052 1 Z M 0.052 0.754 L 0.74 0.619 L 0.052 1 Z',
+	  SHAPE: 'M 0 0.65 L -0.563 -0.325 L 0.563 -0.325 Z M -0.866 0.5 L -0.108 0.653 L -0.619 -0.233 Z M 0.679 -0.332 L 0.906 0.331 L 0.892 -0.455 Z M 0.627 -0.422 L 0.166 -0.95 L 0.84 -0.545 Z M 0.866 0.5 L 0.619 -0.233 L 0.108 0.653 Z M -0.627 -0.422 L -0.166 -0.95 L -0.84 -0.545 Z M -0.679 -0.332 L -0.906 0.331 L -0.892 -0.455 Z M 0 -1 L -0.511 -0.42 L 0.511 -0.42 Z M -0.052 0.754 L -0.74 0.619 L -0.052 1 Z M 0.052 0.754 L 0.74 0.619 L 0.052 1 Z',
     BODY: {
         DAMAGE: 22.5,
         DENSITY: 30,
@@ -2091,7 +2091,7 @@ exports.tesseract = {
     VALUE: 42e7,
     SIZE: 25,
     COLOR: 18,
-	SHAPE: 'M -0.43 0.35 L -0.71 0.63 L -0.71 -0.63 L -0.43 -0.35 L -0.43 0.35 M -0.35 0.43 L -0.63 0.71 L 0.63 0.71 L 0.35 0.43 L -0.35 0.43 M 0.35 -0.43 L 0.63 -0.71 L -0.63 -0.71 L -0.35 -0.43 L 0.35 -0.43 M 0.43 -0.35 L 0.71 -0.63 L 0.71 0.63 L 0.43 0.35 L 0.43 -0.35 M 0.32 0.32 L 0.32 -0.32 L -0.32 -0.32 L -0.32 0.32 L 0.32 0.32',
+	  SHAPE: 'M -0.43 0.35 L -0.71 0.63 L -0.71 -0.63 L -0.43 -0.35 L -0.43 0.35 M -0.35 0.43 L -0.63 0.71 L 0.63 0.71 L 0.35 0.43 L -0.35 0.43 M 0.35 -0.43 L 0.63 -0.71 L -0.63 -0.71 L -0.35 -0.43 L 0.35 -0.43 M 0.43 -0.35 L 0.71 -0.63 L 0.71 0.63 L 0.43 0.35 L 0.43 -0.35 M 0.32 0.32 L 0.32 -0.32 L -0.32 -0.32 L -0.32 0.32 L 0.32 0.32',
     BODY: {
         DAMAGE: 25,
         DENSITY: 40,
@@ -3069,7 +3069,7 @@ exports.megaAutoTurret = {
     PARENT: [exports.autoTurret],
     BODY: {
         FOV: 2,
-	SPEED: 0.9
+	      SPEED: 0.9
     },
     CONTROLLERS: ['canRepel', 'onlyAcceptInArc', 'mapAltToFire', 'nearestDifferentMaster'],
     GUNS: [{

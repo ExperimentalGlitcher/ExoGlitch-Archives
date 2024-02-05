@@ -341,7 +341,7 @@ exports.food = {
     HITS_OWN_TYPE: 'repel',
     MOTION_TYPE: 'drift',
     FACING_TYPE: 'turnWithSpeed',
-    VARIES_IN_SIZE: true,
+    VARIES_IN_SIZE: false,
     BODY: {
         STEALTH: 30,
         PUSHABILITY: 1,
@@ -1076,110 +1076,8 @@ const addAura = (damageFactor = 1, sizeFactor = 1, opacity = 0.3, auraColor) => 
 };
 
 // FOOD
-exports.hugePentagon = {
-    PARENT: [exports.food],
-    FOOD: {
-        LEVEL: 5,
-    },
-    LABEL: 'Alpha Pentagon',
-    VALUE: 15000,
-    SHAPE: -5,
-    SIZE: 58,
-    COLOR: 14,
-    BODY: {
-        DAMAGE: 2 * basePolygonDamage,
-        DENSITY: 80,
-        HEALTH: 300 * basePolygonHealth,
-        RESIST: Math.pow(1.25, 3),
-        SHIELD: 40 * basePolygonHealth,
-        REGEN: 0.6,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.bigPentagon = {
-    PARENT: [exports.food],
-    FOOD: {
-        LEVEL: 4,
-    },
-    LABEL: 'Beta Pentagon',
-    VALUE: 2500,
-    SHAPE: 5,
-    SIZE: 30,
-    COLOR: 14,
-    BODY: {
-        DAMAGE: 2 * basePolygonDamage,
-        DENSITY: 30,
-        HEALTH: 50 * basePolygonHealth,
-        RESIST: Math.pow(1.25, 2),
-        SHIELD: 20 * basePolygonHealth,
-        REGEN: 0.2,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.pentagon = {
-    PARENT: [exports.food],
-    FOOD: {
-        LEVEL: 3,
-    },
-    LABEL: 'Pentagon',
-    VALUE: 400,
-    SHAPE: 5,
-    SIZE: 16,
-    COLOR: 14,
-    BODY: {
-        DAMAGE: 1.5 * basePolygonDamage,
-        DENSITY: 8,
-        HEALTH: 10 * basePolygonHealth,
-        RESIST: 1.25,
-        PENETRATION: 1.1,
-    },
-    DRAW_HEALTH: true,
-};
-exports.triangle = {
-    PARENT: [exports.food],
-    FOOD: {
-        LEVEL: 2,
-    },
-    LABEL: 'Triangle',
-    VALUE: 120,
-    SHAPE: 3,
-    SIZE: 9,
-    COLOR: 2,
-    BODY: {
-        DAMAGE: basePolygonDamage,
-        DENSITY: 6,
-        HEALTH: 3 * basePolygonHealth,
-        RESIST: 1.15,
-        PENETRATION: 1.5,
-    },
-    DRAW_HEALTH: true,
-};
-exports.square = {
-    PARENT: [exports.food],
-    FOOD: {
-        LEVEL: 1,
-    },
-    LABEL: 'Square',
-    VALUE: 30,
-    SHAPE: 4,
-    SIZE: 10,
-    COLOR: 13,
-    BODY: {
-        DAMAGE: basePolygonDamage,
-        DENSITY: 4,
-        HEALTH: basePolygonHealth,
-        PENETRATION: 2,
-    },
-    DRAW_HEALTH: true,
-    INTANGIBLE: false,
-};
 exports.egg = {
     PARENT: [exports.food],
-    FOOD: {
-        LEVEL: 0,
-    },
     LABEL: 'Egg',
     VALUE: 10,
     SHAPE: 0,
@@ -1191,74 +1089,325 @@ exports.egg = {
         DENSITY: 2,
         HEALTH: 0.0011,
         PUSHABILITY: 0,
+        ACCELERATION: 0.015
     },
-    DRAW_HEALTH: false,
+    DRAW_HEALTH: false
 };
-exports.greenpentagon = {
-    PARENT: [exports.food],
-    LABEL: 'Pentagon',
-    VALUE: 30000,
-    SHAPE: 5,
-    SIZE: 16,
-    COLOR: 1,
-    BODY: {
-        DAMAGE: 3,
-        DENSITY: 8,
-        HEALTH: 200,
-        RESIST: 1.25,
-        PENETRATION: 1.1,
-    },
-    DRAW_HEALTH: true,
-};
-exports.greentriangle = {
-    PARENT: [exports.food],
-    LABEL: 'Triangle',
-    VALUE: 7000,
-    SHAPE: 3,
-    SIZE: 9,
-    COLOR: 1,
-    BODY: {
-        DAMAGE: 1,
-        DENSITY: 6,
-        HEALTH: 60,
-        RESIST: 1.15,
-        PENETRATION: 1.5,
-    },
-    DRAW_HEALTH: true,
-};
-exports.greensquare = {
-    PARENT: [exports.food],
-    LABEL: 'Square',
-    VALUE: 2000,
-    SHAPE: 4,
-    SIZE: 10,
-    COLOR: 1,
-    BODY: {
-        DAMAGE: 0.5,
-        DENSITY: 4,
-        HEALTH: 20,
-        PENETRATION: 2,
-    },
-    DRAW_HEALTH: true,
-    INTANGIBLE: false,
+exports.eggFoodProp = {
+    SHAPE: 0,
+    COLOR: 6
 };
 exports.gem = {
     PARENT: [exports.food],
     LABEL: 'Gem',
-    VALUE: 2000,
+    VALUE: 2e3,
     SHAPE: 6,
     SIZE: 5,
     COLOR: 0,
     BODY: {
-        DAMAGE: basePolygonDamage/4,
+        DAMAGE: basePolygonDamage / 4,
         DENSITY: 4,
         HEALTH: 10,
         PENETRATION: 2,
         RESIST: 2,
         PUSHABILITY: 0.25,
+        ACCELERATION: 0.015
     },
     DRAW_HEALTH: true,
     INTANGIBLE: false,
+    GIVE_KILL_MESSAGE: true
+};
+exports.jewel = {
+    PARENT: [exports.food],
+    LABEL: 'Jewel',
+    VALUE: 1e5,
+    SHAPE: 6,
+    SIZE: 12,
+    COLOR: 3,
+    BODY: {
+        DAMAGE: basePolygonDamage / 4,
+        DENSITY: 4,
+        HEALTH: 50,
+        PENETRATION: 2,
+        RESIST: 2,
+        PUSHABILITY: 0.25,
+        ACCELERATION: 0.015
+    },
+    DRAW_HEALTH: true,
+    INTANGIBLE: false,
+    GIVE_KILL_MESSAGE: true
+};
+exports.square = {
+    PARENT: [exports.food],
+    LABEL: 'Square',
+    VALUE: 30,
+    SHAPE: 4,
+    SIZE: 10,
+    COLOR: 13,
+    BODY: {
+        DAMAGE: basePolygonDamage,
+        DENSITY: 4,
+        HEALTH: basePolygonHealth,
+        PENETRATION: 2,
+        ACCELERATION: 0.0075
+    },
+    DRAW_HEALTH: true,
+    INTANGIBLE: false
+};
+exports.squareFoodProp = {
+    SHAPE: 4,
+    COLOR: 13
+};
+exports.triangle = {
+    PARENT: [exports.food],
+    LABEL: 'Triangle',
+    VALUE: 120,
+    SHAPE: 3,
+    SIZE: 9,
+    COLOR: 2,
+    BODY: {
+        DAMAGE: basePolygonDamage,
+        DENSITY: 6,
+        HEALTH: 3 * basePolygonHealth,
+        RESIST: 1.15,
+        PENETRATION: 1.5,
+        ACCELERATION: 0.005
+    },
+    DRAW_HEALTH: true
+};
+exports.triangleFoodProp = {
+    SHAPE: 3,
+    COLOR: 2
+};
+exports.pentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Pentagon',
+    VALUE: 400,
+    SHAPE: 5,
+    SIZE: 20,
+    COLOR: 14,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage,
+        DENSITY: 8,
+        HEALTH: 10 * basePolygonHealth,
+        RESIST: 1.25,
+        PENETRATION: 1.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true
+};
+exports.pentagonFoodProp = {
+    SHAPE: 5,
+    COLOR: 14
+};
+exports.betaPentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Beta Pentagon',
+    VALUE: 2000,
+    SHAPE: 5,
+    SIZE: 24.721359549995793,
+    COLOR: 14,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage,
+        DENSITY: 8,
+        HEALTH: 50 * basePolygonHealth,
+        RESIST: Math.pow(1.25, 2),
+        PENETRATION: 1.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true,
+	TURRETS: [{
+        POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
+        TYPE: exports.pentagonFoodProp
+    }]
+};
+exports.alphaPentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Alpha Pentagon',
+    VALUE: 1e4,
+    SHAPE: 5,
+    SIZE: 30.55728090000841,
+    COLOR: 14,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage,
+        DENSITY: 8,
+        HEALTH: 250 * basePolygonHealth,
+        RESIST: Math.pow(1.25, 3),
+        PENETRATION: 1.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true,
+	TURRETS: [{
+        POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
+        TYPE: exports.pentagonFoodProp
+    }, {
+        POSITION: [13.090169943749475, 0, 0, 0, 0, 1],
+        TYPE: exports.pentagonFoodProp
+    }]
+};
+exports.hexagon = {
+    PARENT: [exports.food],
+    LABEL: 'Hexagon',
+    VALUE: 500,
+    SHAPE: 6,
+    SIZE: 22,
+    COLOR: 0,
+    BODY: {
+		DAMAGE: 3 * basePolygonDamage,
+        DENSITY: 8,
+        HEALTH: 30 * basePolygonHealth,
+        RESIST: 1.3,
+        PENETRATION: 1.1,
+        ACCELERATION: 0.003
+    },
+    DRAW_HEALTH: true
+};
+exports.sphere = {
+    PARENT: [exports.food],
+    LABEL: 'Sphere',
+    VALUE: 1e7,
+    SHAPE: 0,
+    SIZE: 9,
+    COLOR: 18,
+    BODY: {
+        DAMAGE: 10,
+        DENSITY: 16,
+        HEALTH: 300,
+        RESIST: 2.5,
+        PENETRATION: 15,
+        ACCELERATION: 0.002
+    },
+    DRAW_HEALTH: true,
+	GIVE_KILL_MESSAGE: true,
+    TURRETS: [{
+        POSITION: [17, 0, 0, 0, 0, 1],
+        TYPE: [exports.eggFoodProp, { COLOR: 18 }]
+    }, {
+        POSITION: [15, 1, -1, 0, 0, 1],
+        TYPE: [exports.eggFoodProp, { COLOR: 18 }]
+    }, {
+        POSITION: [13, 2, -2, 0, 0, 1],
+        TYPE: [exports.eggFoodProp, { COLOR: 18 }]
+    }, {
+        POSITION: [11, 3, -3, 0, 0, 1],
+        TYPE: [exports.eggFoodProp, { COLOR: 18 }]
+    }, {
+        POSITION: [8, 3.25, -3.25, 0, 0, 1],
+        TYPE: [exports.eggFoodProp, { COLOR: 18 }]
+    }, {
+        POSITION: [6, 3, -3, 0, 0, 1],
+        TYPE: [exports.eggFoodProp, { COLOR: 18 }]
+    }]
+};
+exports.cube = {
+    PARENT: [exports.food],
+    LABEL: 'Cube',
+    VALUE: 2e7,
+    SIZE: 10,
+    COLOR: 18,
+	SHAPE: 'M 0.0575 0.0437 V 0.9921 L 0.8869 0.5167 V -0.4306 L 0.0575 0.0437 Z M -0.0583 0.0437 V 0.9921 L -0.8869 0.5159 V -0.4306 L -0.0583 0.0437 Z M 0 -0.0556 L 0.829 -0.5266 L 0 -1 L -0.8254 -0.527 L 0 -0.0556',
+    BODY: {
+        DAMAGE: 12,
+        DENSITY: 20,
+        HEALTH: 400,
+        RESIST: 3,
+        PENETRATION: 17.5,
+        ACCELERATION: 0.002
+    },
+    DRAW_HEALTH: true,
+    INTANGIBLE: false,
+    GIVE_KILL_MESSAGE: true
+};
+exports.tetrahedron = {
+    PARENT: [exports.food],
+    LABEL: 'Tetrahedron',
+    VALUE: 3e7,
+    SIZE: 12,
+    COLOR: 18,
+	SHAPE: 'M 0.058 0.044 V 1 L 0.894 -0.434 L 0.058 0.044 Z M -0.0588 0.044 V 1 L -0.894 -0.434 L -0.0588 0.044 Z M 0 -0.056 L 0.8356 -0.5308 L -0.832 -0.5312 L 0 -0.056',
+    BODY: {
+        DAMAGE: 15,
+        DENSITY: 23,
+        HEALTH: 500,
+        RESIST: 3.5,
+        PENETRATION: 22.5,
+        ACCELERATION: 0.002
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.octahedron = {
+    PARENT: [exports.food],
+    LABEL: 'Octahedron',
+    VALUE: 4e7,
+    SIZE: 13,
+    COLOR: 18,
+	SHAPE: 'M 0.06 -0.06 L 0.95 -0.06 L 0.06 -0.95 L 0.06 -0.06 M -0.06 0.06 L -0.06 0.95 L -0.95 0.06 L -0.06 0.06 M -0.06 -0.06 L -0.95 -0.06 L -0.06 -0.95 L -0.06 -0.06 M 0.06 0.06 L 0.06 0.95 L 0.95 0.06 L 0.06 0.06',
+    BODY: {
+        DAMAGE: 18,
+        DENSITY: 26,
+        HEALTH: 600,
+        RESIST: 4,
+        PENETRATION: 30,
+        ACCELERATION: 0.002
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.dodecahedron = {
+    PARENT: [exports.food],
+    LABEL: 'Dodecahedron',
+    VALUE: 5e7,
+    SIZE: 18,
+    COLOR: 18,
+	SHAPE: 'M -0.3273 -0.4318 H 0.3045 L 0.5068 0.1727 L -0.0091 0.5455 L -0.5227 0.1727 L -0.3273 -0.4318 Z M -0.6068 0.2682 L -0.0773 0.6545 V 0.9591 L -0.5955 0.7977 L -0.9136 0.3545 L -0.6068 0.2682 Z M 0.5909 0.2682 L 0.0523 0.6591 V 0.9636 L 0.5773 0.7955 L 0.8955 0.3545 L 0.5909 0.2682 Z M -0.65 0.1455 L -0.4477 -0.4818 L -0.6318 -0.7505 L -0.9545 -0.3182 V 0.2318 L -0.65 0.1455 Z M 0.4273 -0.4841 L 0.6318 0.1455 L 0.9341 0.2341 V -0.3136 L 0.6145 -0.7591 L 0.4273 -0.4841 Z M -0.0091 -1 L -0.5318 -0.8341 L -0.3455 -0.5609 H 0.3227 L 0.5159 -0.8314 L -0.0091 -1',
+    BODY: {
+        DAMAGE: 17.5,
+        DENSITY: 28,
+        HEALTH: 700,
+        RESIST: 4.5,
+        PENETRATION: 32.5,
+        ACCELERATION: 0.002
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.icosahedron = {
+    PARENT: [exports.food],
+    LABEL: 'Icosahedron',
+    VALUE: 1e8,
+    SIZE: 20,
+    COLOR: 18,
+	SHAPE: 'M 0 0.65 L -0.563 -0.325 L 0.563 -0.325 Z M -0.866 0.5 L -0.108 0.653 L -0.619 -0.233 Z M 0.679 -0.332 L 0.906 0.331 L 0.892 -0.455 Z M 0.627 -0.422 L 0.166 -0.95 L 0.84 -0.545 Z M 0.866 0.5 L 0.619 -0.233 L 0.108 0.653 Z M -0.627 -0.422 L -0.166 -0.95 L -0.84 -0.545 Z M -0.679 -0.332 L -0.906 0.331 L -0.892 -0.455 Z M 0 -1 L -0.511 -0.42 L 0.511 -0.42 Z M -0.052 0.754 L -0.74 0.619 L -0.052 1 Z M 0.052 0.754 L 0.74 0.619 L 0.052 1 Z',
+    BODY: {
+        DAMAGE: 22.5,
+        DENSITY: 30,
+        HEALTH: 800,
+        RESIST: 5,
+        PENETRATION: 35,
+        ACCELERATION: 0.002
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.tesseract = {
+    PARENT: [exports.food],
+    LABEL: 'Tesseract',
+    VALUE: 42e7,
+    SIZE: 25,
+    COLOR: 18,
+	SHAPE: 'M -0.43 0.35 L -0.71 0.63 L -0.71 -0.63 L -0.43 -0.35 L -0.43 0.35 M -0.35 0.43 L -0.63 0.71 L 0.63 0.71 L 0.35 0.43 L -0.35 0.43 M 0.35 -0.43 L 0.63 -0.71 L -0.63 -0.71 L -0.35 -0.43 L 0.35 -0.43 M 0.43 -0.35 L 0.71 -0.63 L 0.71 0.63 L 0.43 0.35 L 0.43 -0.35 M 0.32 0.32 L 0.32 -0.32 L -0.32 -0.32 L -0.32 0.32 L 0.32 0.32',
+    BODY: {
+        DAMAGE: 25,
+        DENSITY: 40,
+        HEALTH: 2000,
+        PENETRATION: 50,
+        ACCELERATION: 0.003
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
 };
 
 // TANK PROJECTILES & TURRETS
@@ -2376,3 +2525,10 @@ exports.elite = {
 
 // UPGRADE PATHS
 exports.basic.UPGRADES_TIER_1 = [];
+
+// EVOLUTIONS
+exports.egg.EVOLUTIONS = [['square', 100]];
+exports.square.EVOLUTIONS = [['triangle', 100]];
+exports.triangle.EVOLUTIONS = [['pentagon', 100]];
+exports.pentagon.EVOLUTIONS = [['hexagon', 100]];
+exports.hexagon.EVOLUTIONS = [];

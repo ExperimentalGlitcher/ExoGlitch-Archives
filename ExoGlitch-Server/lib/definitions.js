@@ -1194,6 +1194,42 @@ exports.shadowEgg = {
     DRAW_HEALTH: false,
     GIVE_KILL_MESSAGE: true
 };
+exports.rainbowEgg = {
+    PARENT: [exports.food],
+    LABEL: 'Rainbow Egg',
+    VALUE: 40000,
+    SHAPE: 0,
+    SIZE: 8,
+    COLOR: 36,
+    INTANGIBLE: true,
+    BODY: {
+        DAMAGE: 3,
+        DENSITY: 5,
+        HEALTH: 0.088,
+        PUSHABILITY: 0,
+        ACCELERATION: 0.015
+    },
+    DRAW_HEALTH: false,
+    GIVE_KILL_MESSAGE: true
+};
+exports.transgenderEgg = {
+    PARENT: [exports.food],
+    LABEL: 'Transgender Egg',
+    VALUE: 50000,
+    SHAPE: 0,
+    SIZE: 9,
+    COLOR: 37,
+    INTANGIBLE: true,
+    BODY: {
+        DAMAGE: 4,
+        DENSITY: 6,
+        HEALTH: 0.11,
+        PUSHABILITY: 0,
+        ACCELERATION: 0.015
+    },
+    DRAW_HEALTH: false,
+    GIVE_KILL_MESSAGE: true
+};
 exports.square = {
     PARENT: [exports.food],
     LABEL: 'Square',
@@ -1264,6 +1300,42 @@ exports.shadowSquare = {
         DENSITY: 6,
         HEALTH: 40 * basePolygonHealth,
         PENETRATION: 4,
+        ACCELERATION: 0.0075
+    },
+    DRAW_HEALTH: true,
+    INTANGIBLE: false,
+    GIVE_KILL_MESSAGE: true
+};
+exports.rainbowSquare = {
+    PARENT: [exports.food],
+    LABEL: 'Rainbow Square',
+    VALUE: 120000,
+    SHAPE: 4,
+    SIZE: 13,
+    COLOR: 36,
+    BODY: {
+        DAMAGE: basePolygonDamage + 3,
+        DENSITY: 7,
+        HEALTH: 80 * basePolygonHealth,
+        PENETRATION: 5,
+        ACCELERATION: 0.0075
+    },
+    DRAW_HEALTH: true,
+    INTANGIBLE: false,
+    GIVE_KILL_MESSAGE: true
+};
+exports.transgenderSquare = {
+    PARENT: [exports.food],
+    LABEL: 'Transgender Square',
+    VALUE: 150000,
+    SHAPE: 4,
+    SIZE: 14,
+    COLOR: 37,
+    BODY: {
+        DAMAGE: basePolygonDamage + 4,
+        DENSITY: 8,
+        HEALTH: 100 * basePolygonHealth,
+        PENETRATION: 6,
         ACCELERATION: 0.0075
     },
     DRAW_HEALTH: true,
@@ -1346,6 +1418,42 @@ exports.shadowTriangle = {
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true
 };
+exports.rainbowTriangle = {
+    PARENT: [exports.food],
+    LABEL: 'Rainbow Triangle',
+    VALUE: 480000,
+    SHAPE: 3,
+    SIZE: 12,
+    COLOR: 36,
+    BODY: {
+        DAMAGE: basePolygonDamage + 3,
+        DENSITY: 9,
+        HEALTH: 240 * basePolygonHealth,
+        RESIST: 1.15,
+        PENETRATION: 4.5,
+        ACCELERATION: 0.005
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.transgenderTriangle = {
+    PARENT: [exports.food],
+    LABEL: 'Transgender Triangle',
+    VALUE: 600000,
+    SHAPE: 3,
+    SIZE: 13,
+    COLOR: 37,
+    BODY: {
+        DAMAGE: basePolygonDamage + 4,
+        DENSITY: 10,
+        HEALTH: 300 * basePolygonHealth,
+        RESIST: 1.15,
+        PENETRATION: 5.5,
+        ACCELERATION: 0.005
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
 exports.pentagon = {
     PARENT: [exports.food],
     LABEL: 'Pentagon',
@@ -1417,6 +1525,42 @@ exports.shadowPentagon = {
         HEALTH: 400 * basePolygonHealth,
         RESIST: 1.25,
         PENETRATION: 3.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.rainbowPentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Rainbow Pentagon',
+    VALUE: 1600000,
+    SHAPE: 5,
+    SIZE: 23,
+    COLOR: 36,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage + 3,
+        DENSITY: 11,
+        HEALTH: 800 * basePolygonHealth,
+        RESIST: 1.25,
+        PENETRATION: 4.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.transgenderPentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Transgender Pentagon',
+    VALUE: 2000000,
+    SHAPE: 5,
+    SIZE: 24,
+    COLOR: 37,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage + 4,
+        DENSITY: 12,
+        HEALTH: 1000 * basePolygonHealth,
+        RESIST: 1.25,
+        PENETRATION: 5.1,
         ACCELERATION: 0.0035
     },
     DRAW_HEALTH: true,
@@ -1508,6 +1652,50 @@ exports.shadowBetaPentagon = {
 	TURRETS: [{
         POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
         TYPE: [exports.pentagonFoodProp, { COLOR: 19 }]
+    }]
+};
+exports.rainbowBetaPentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Rainbow Beta Pentagon',
+    VALUE: 8000000,
+    SHAPE: 5,
+    SIZE: 27.721359549995793,
+    COLOR: 36,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage + 3,
+        DENSITY: 11,
+        HEALTH: 4000 * basePolygonHealth,
+        RESIST: Math.pow(1.25, 2),
+        PENETRATION: 4.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true,
+	TURRETS: [{
+        POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
+        TYPE: [exports.pentagonFoodProp, { COLOR: 36 }]
+    }]
+};
+exports.transgenderBetaPentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Transgender Beta Pentagon',
+    VALUE: 10000000,
+    SHAPE: 5,
+    SIZE: 28.721359549995793,
+    COLOR: 37,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage + 4,
+        DENSITY: 12,
+        HEALTH: 5000 * basePolygonHealth,
+        RESIST: Math.pow(1.25, 2),
+        PENETRATION: 5.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true,
+	TURRETS: [{
+        POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
+        TYPE: [exports.pentagonFoodProp, { COLOR: 37 }]
     }]
 };
 exports.alphaPentagon = {
@@ -1611,6 +1799,56 @@ exports.shadowAlphaPentagon = {
         TYPE: [exports.pentagonFoodProp, { COLOR: 19 }]
     }]
 };
+exports.rainbowAlphaPentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Rainbow Alpha Pentagon',
+    VALUE: 40000000,
+    SHAPE: 5,
+    SIZE: 33.55728090000841,
+    COLOR: 36,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage + 3,
+        DENSITY: 11,
+        HEALTH: 20000 * basePolygonHealth,
+        RESIST: Math.pow(1.25, 3),
+        PENETRATION: 4.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true,
+	TURRETS: [{
+        POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
+        TYPE: [exports.pentagonFoodProp, { COLOR: 36 }]
+    }, {
+        POSITION: [13.090169943749475, 0, 0, 0, 0, 1],
+        TYPE: [exports.pentagonFoodProp, { COLOR: 36 }]
+    }]
+};
+exports.transgenderAlphaPentagon = {
+    PARENT: [exports.food],
+    LABEL: 'Transgender Alpha Pentagon',
+    VALUE: 50000000,
+    SHAPE: 5,
+    SIZE: 34.55728090000841,
+    COLOR: 37,
+    BODY: {
+        DAMAGE: 1.5 * basePolygonDamage + 4,
+        DENSITY: 12,
+        HEALTH: 25000 * basePolygonHealth,
+        RESIST: Math.pow(1.25, 3),
+        PENETRATION: 5.1,
+        ACCELERATION: 0.0035
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true,
+	TURRETS: [{
+        POSITION: [16.18033988749895, 0, 0, 180, 0, 1],
+        TYPE: [exports.pentagonFoodProp, { COLOR: 37 }]
+    }, {
+        POSITION: [13.090169943749475, 0, 0, 0, 0, 1],
+        TYPE: [exports.pentagonFoodProp, { COLOR: 37 }]
+    }]
+};
 exports.hexagon = {
     PARENT: [exports.food],
     LABEL: 'Hexagon',
@@ -1619,7 +1857,7 @@ exports.hexagon = {
     SIZE: 22,
     COLOR: 0,
     BODY: {
-		DAMAGE: 3 * basePolygonDamage,
+        DAMAGE: 3 * basePolygonDamage,
         DENSITY: 8,
         HEALTH: 30 * basePolygonHealth,
         RESIST: 1.3,
@@ -1636,7 +1874,7 @@ exports.shinyHexagon = {
     SIZE: 22,
     COLOR: 1,
     BODY: {
-		DAMAGE: 3 * basePolygonDamage,
+        DAMAGE: 3 * basePolygonDamage,
         DENSITY: 8,
         HEALTH: 300 * basePolygonHealth,
         RESIST: 1.3,
@@ -1654,7 +1892,7 @@ exports.legendaryHexagon = {
     SIZE: 23,
     COLOR: 0,
     BODY: {
-		DAMAGE: 3 * basePolygonDamage + 1,
+        DAMAGE: 3 * basePolygonDamage + 1,
         DENSITY: 9,
         HEALTH: 600 * basePolygonHealth,
         RESIST: 1.3,
@@ -1673,11 +1911,47 @@ exports.shadowHexagon = {
     COLOR: 19,
     ALPHA: 0.25,
     BODY: {
-		DAMAGE: 3 * basePolygonDamage + 2,
+        DAMAGE: 3 * basePolygonDamage + 2,
         DENSITY: 10,
         HEALTH: 1200 * basePolygonHealth,
         RESIST: 1.3,
         PENETRATION: 3.1,
+        ACCELERATION: 0.003
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.rainbowHexagon = {
+    PARENT: [exports.food],
+    LABEL: 'Rainbow Hexagon',
+    VALUE: 2000000,
+    SHAPE: 6,
+    SIZE: 25,
+    COLOR: 36,
+    BODY: {
+        DAMAGE: 3 * basePolygonDamage + 3,
+        DENSITY: 11,
+        HEALTH: 2400 * basePolygonHealth,
+        RESIST: 1.3,
+        PENETRATION: 4.1,
+        ACCELERATION: 0.003
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.transgenderHexagon = {
+    PARENT: [exports.food],
+    LABEL: 'Transgender Hexagon',
+    VALUE: 2500000,
+    SHAPE: 6,
+    SIZE: 26,
+    COLOR: 37,
+    BODY: {
+        DAMAGE: 3 * basePolygonDamage + 4,
+        DENSITY: 12,
+        HEALTH: 3000 * basePolygonHealth,
+        RESIST: 1.3,
+        PENETRATION: 5.1,
         ACCELERATION: 0.003
     },
     DRAW_HEALTH: true,
@@ -1699,7 +1973,7 @@ exports.sphere = {
         ACCELERATION: 0.002
     },
     DRAW_HEALTH: true,
-	GIVE_KILL_MESSAGE: true,
+    GIVE_KILL_MESSAGE: true,
     TURRETS: [{
         POSITION: [17, 0, 0, 0, 0, 1],
         TYPE: [exports.eggFoodProp, { COLOR: 18 }]
@@ -2977,27 +3251,21 @@ exports.basic.UPGRADES_TIER_1 = [];
 
 // EVOLUTIONS
 exports.egg.EVOLUTIONS = [
-    ['square', 99.95-1/50-1/1000-1/3000-1/57000], ['gem', 0.05], ['shinyEgg', 1/50], ['legendaryEgg', 1/1000], ['shadowEgg', 1/3000], ['sphere', 1/57000]
+    ['square', 99.95], ['gem', 0.05]
 ];
 exports.gem.EVOLUTIONS = [
     ['jewel', 100]
 ];
 exports.jewel.EVOLUTIONS = [];
 exports.square.EVOLUTIONS = [
-    ['triangle', 100-1/50-1/1000-1/3000-1/57000], ['shinySquare', 1/50], ['legendarySquare', 1/1000], ['shadowSquare', 1/3000], ['cube', 1/57000]
+    ['triangle', 100]
 ];
 exports.triangle.EVOLUTIONS = [
-    ['pentagon', 100-1/50-1/1000-1/3000-1/57000], ['shinyTriangle', 1/50], ['legendaryTriangle', 1/1000], ['shadowTriangle', 1/3000], ['tetrahedron', 1/57000]
+    ['pentagon', 100]
 ];
 exports.pentagon.EVOLUTIONS = [
-    ['hexagon', 100-1/50-1/1000-1/3000-1/57000], ['shinyPentagon', 1/50], ['legendaryPentagon', 1/1000], ['shadowPentagon', 1/3000], ['dodecahedron', 1/57000]
+    ['hexagon', 100]
 ];
-exports.betaPentagon.EVOLUTIONS = [
-    ['alphaPentagon', 100-1/50-1/1000-1/3000], ['shinyBetaPentagon', 1/50], ['legendaryBetaPentagon', 1/1000], ['shadowBetaPentagon', 1/3000]
-];
-exports.alphaPentagon.EVOLUTIONS = [
-    ['alphaPentagon', 100-1/50-1/1000-1/3000], ['shinyAlphaPentagon', 1/50], ['legendaryAlphaPentagon', 1/1000], ['shadowAlphaPentagon', 1/3000]
-];
-exports.hexagon.EVOLUTIONS = [
-    ['hexagon', 100-1/50-1/1000-1/3000-1/57000], ['shinyHexagon', 1/50], ['legendaryHexagon', 1/1000], ['shadowHexagon', 1/3000], ['icosahedron', 1/57000]
-];
+exports.betaPentagon.EVOLUTIONS = [];
+exports.alphaPentagon.EVOLUTIONS = [];
+exports.hexagon.EVOLUTIONS = [];

@@ -15,6 +15,7 @@
   "HEIGHT": 1500,
   "MODE": "ffa",
   "RANDOM_COLORS": false,
+  "BOSS_SPAWN_TIMER": 2000,
   "BANNED_CHARACTER_REGEX": "/[\uFDFD\u200E\u0000]/gi", 
   "ROOM_SETUP": [
     [ "roid", "norm", "norm", "roid" ],
@@ -56,7 +57,14 @@
   "SKILL_LEAK": 0,
   "STEALTH": 4,
   "MIN_SPEED": 0.001,
-  "FOOD_AMOUNT": 0.4, 
+  "FOOD_AMOUNT": 0.4,
+  "MAX_FOOD": 400,
+  "MAX_NEST_FOOD": 30,
+  "MAX_CRASHERS": 18,
+  "EVOLVE_TIME": 90000,
+  "EVOLVE_TIME_RAN_ADDER": 210000,
+  "EVOLVE_HALT_CHANCE": 0.25,
+  "SHINY_CHANCE": 0.00001,
   "SKILL_BOOST": 5,
   "BOTS": 0,
   "GLASS_HEALTH_FACTOR": 2

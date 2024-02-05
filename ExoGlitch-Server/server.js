@@ -4925,7 +4925,7 @@ var maintainloop = (() => {
                 if (!i--) return;
                 location = room.randomType("nest");
             } while (dirtyCheck(location, 100))
-            let shape = spawnSingle(location, ran.choose(['pentagon', 'hexagon']), id);
+            let shape = spawnSingle(location, ran.choose(['pentagon', 'betaPentagon', 'alphaPentagon', 'hexagon']), id);
             shape.isNestFood = true;
         }
         return () => {

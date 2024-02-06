@@ -62,7 +62,7 @@ const g = { // Gun info here
     productionist: [75, 0.25, 0.05, 0.7, 1, 0.75, 1, 4, 1, 1.5, 1, 5, 1],
 
 // Spammers
-    desmos: [1, 1, 0, 0.8, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+    desmos: [1, 1, 1, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     single: [1.05, 1, 1, 1, 1, 1, 1, 1.05, 1, 1, 1, 1, 1],
     twin: [1, 0.5, 0.9, 1, 0.9, 0.7, 1, 1, 1, 1, 1, 1.2, 1],
     doubleTwin: [1, 1, 1, 1, 1, 0.9, 1, 1, 1, 1, 1, 1, 1],
@@ -154,14 +154,14 @@ const g = { // Gun info here
     blank: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     weak: [2, 1, 1, 1, 0.6, 0.6, 0.8, 0.5, 0.7, 0.25, 0.3, 1, 1],
     power: [1, 1, 0.6, 1.2, 1, 1, 1.25, 2, 1.7, 1, 2, 0.5, 1.5],
-    fake: [1, 0, 0, 0.00001, 0.0001, 1, 1, 0, 0, 0, 1, 0, 1],
+    fake: [1, 1, 1, 0.00001, 0.0001, 1, 1, 0.00001, 2, 0, 1, 1, 1],
     op: [0.5, 1.3, 1, 1, 4, 4, 4, 3, 2, 1, 5, 2, 1],
     arenaCloser: [1.25, 0.25, 1, 1, 1000, 1000, 1000, 2.5, 2.25, 1.4, 4, 0.25, 1],
     healer: [1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1],
     lowPower: [1, 1, 2, 1, 0.5, 0.5, 0.7, 1, 1, 1, 1, 0.5, 0.7],
     halfrange: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1],
     aura: [0.001, 0.001, 0.001, 6, 1, 3, 1, 0.001, 0.001, 1, 1, 0.001, 1],
-    noSpread: [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+    noSpread: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 };
 
 // NAMES
@@ -662,7 +662,7 @@ const makeMulti = (type, sides = 3, name, options = {}) => {
         stats = options.stats || [g.blank],
         angles = options.angles || new Array(sides);
 
-    applyStats(output.GUNS, [g.flankGuard, ...stats]);
+    applyStats(output.GUNS, [...stats]);
 
     let baseGuns = deepCopy(output.GUNS);
     output.GUNS = [];
@@ -2115,7 +2115,7 @@ exports.missile = {
         POSITION: [14, 6, 1, 0, -2, 130, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { recoil: 1.35 }, { speed: 1.3, maxSpeed: 1.3 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [1, 1.35, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2125,7 +2125,7 @@ exports.missile = {
         POSITION: [14, 6, 1, 0, 2, 230, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { recoil: 1.35 }, { speed: 1.3, maxSpeed: 1.3 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [1, 1.35, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2139,7 +2139,7 @@ exports.hypermissile = {
         POSITION: [14, 6, 1, 0, -2, 150, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, { reload: 3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2149,7 +2149,7 @@ exports.hypermissile = {
         POSITION: [14, 6, 1, 0, 2, 210, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, { reload: 3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2159,7 +2159,7 @@ exports.hypermissile = {
         POSITION: [14, 6, 1, 0, -2, 90, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, { reload: 3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }]
@@ -2168,7 +2168,7 @@ exports.hypermissile = {
         POSITION: [14, 6, 1, 0, 2, 270, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, { reload: 3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }]
@@ -2186,7 +2186,7 @@ exports.minimissile = {
         POSITION: [14, 6, 1, 0, 0, 180, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { recoil: 1.35 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [1, 1.35, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2201,7 +2201,7 @@ exports.spinmissile = {
         POSITION: [14, 8, 1, 0, 0, 0, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { reload: 0.75 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2211,7 +2211,7 @@ exports.spinmissile = {
         POSITION: [14, 8, 1, 0, 0, 180, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { reload: 0.75 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2225,7 +2225,7 @@ exports.hyperspinmissile = {
         POSITION: [14, 8, 1, 0, 0, 0, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { reload: 0.75 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2235,7 +2235,7 @@ exports.hyperspinmissile = {
         POSITION: [14, 8, 1, 0, 0, 180, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { reload: 0.75 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2245,7 +2245,7 @@ exports.hyperspinmissile = {
         POSITION: [14, 8, 1, 0, 0, 90, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { reload: 0.75 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2255,7 +2255,7 @@ exports.hyperspinmissile = {
         POSITION: [14, 8, 1, 0, 0, 270, 0],
         PROPERTIES: {
             AUTOFIRE: true,
-            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, { reload: 0.5 }, g.lowPower, { reload: 0.75 }, { speed: 1.3, maxSpeed: 1.3 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.skimmer, [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.lowPower, [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1]]),
             TYPE: [exports.bullet, {
                 PERSISTS_AFTER_DEATH: true
             }],
@@ -2301,6 +2301,67 @@ exports.rocketeerMissile = {
             }],
             STAT_CALCULATOR: gunCalcNames.thruster
         }
+    }]
+};
+exports.surgeonPillboxTurret = {
+    PARENT: [exports.genericTank],
+    LABEL: '',
+    COLOR: 16,
+    BODY: {
+        FOV: 3
+    },
+    HAS_NO_RECOIL: true,
+    CONTROLLERS: [['spin', { independent: true, speed: 0.08 }]],
+    TURRETS: [{
+        POSITION: [13, 0, 0, 0, 360, 1],
+        TYPE: exports.healerSymbol,
+    }],
+    GUNS: [{
+        POSITION: [17, 11, 1, 0, 0, 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret]),
+            TYPE: exports.healerBullet,
+            AUTOFIRE: true
+        }
+    }, {
+        POSITION: [14, 11, 1, 0, 0, 90, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret]),
+            TYPE: exports.healerBullet,
+            AUTOFIRE: true
+        }
+    }, {
+        POSITION: [17, 11, 1, 0, 0, 270, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret]),
+            TYPE: exports.healerBullet,
+            AUTOFIRE: true
+        }
+    }, {
+        POSITION: [14, 11, 1, 0, 0, 270, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret]),
+            TYPE: exports.healerBullet,
+            AUTOFIRE: true
+        }
+    }]
+};
+exports.surgeonPillbox = {
+    PARENT: [exports.trap],
+    LABEL: 'Pillbox',
+    SHAPE: -6,
+    MOTION_TYPE: 'motor',
+    CONTROLLERS: ['goToMasterTarget', 'nearestDifferentMaster'],
+    INDEPENDENT: true,
+    BODY: {
+        SPEED: 1,
+        DENSITY: 5,
+        DAMAGE: 0
+    },
+    DIE_AT_RANGE: true, 
+    TURRETS: [{
+        POSITION: [11, 0, 0, 0, 360, 1],
+        TYPE: exports.surgeonPillboxTurret,
     }]
 };
 exports.sunchip = {
@@ -2437,7 +2498,7 @@ exports.bansheegun = {
     GUNS: [{
         POSITION: [26, 10, 1, 0, 0, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.autoTurret, { reload: 1.5 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard, g.autoTurret, [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: exports.bullet
         }
     }]
@@ -2450,13 +2511,13 @@ exports.auto4gun = {
     GUNS: [{
         POSITION: [16, 4, 1, 0, -3.5, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.power, { speed: 0.7, maxSpeed: 0.7 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.power, [1, 1, 1, 1, 1, 1, 1, 0.7, 0.7, 1, 1, 1, 1]]),
             TYPE: exports.bullet,
         }
     }, {
         POSITION: [16, 4, 1, 0, 3.5, 0, 0.5],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.power, { speed: 0.7, maxSpeed: 0.7 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.power, [1, 1, 1, 1, 1, 1, 1, 0.7, 0.7, 1, 1, 1, 1]]),
             TYPE: exports.bullet,
         }
     }]
@@ -2466,19 +2527,19 @@ exports.bigauto4gun = {
     GUNS: [{
         POSITION: [14, 5, 1, 0, -4.5, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.twin, g.power, { reload: 2 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.twin, g.power, [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: exports.bullet,
         }
     }, {
         POSITION: [14, 5, 1, 0, 4.5, 0, 0.33],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.twin, g.power, { reload: 2 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.twin, g.power, [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: exports.bullet,
         }
     }, {
         POSITION: [16, 5, 1, 0, 0, 0, 0.67],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.twin, g.power, { reload: 2 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.autoTurret, g.pelleter, g.twin, g.twin, g.power, [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: exports.bullet,
         }
     }]
@@ -2506,7 +2567,7 @@ exports.autoTurret = {
     GUNS: [{
         POSITION: [22, 10, 1, 0, 0, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, { recoil: 1.15 }, g.turret]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.turret]),
             TYPE: exports.bullet
         }
     }]
@@ -2523,7 +2584,7 @@ exports.droneAutoTurret = {
     GUNS: [{
         POSITION: [22, 10, 1, 0, 0, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, { recoil: 1.15 }, g.turret, g.overdrive]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.turret, g.overdrive]),
             TYPE: exports.bullet
         }
     }]
@@ -2536,14 +2597,14 @@ exports.autoSmasherTurret = {
     GUNS: [{
         POSITION: [20, 6, 1, 0, 5, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, { recoil: 1.15 }, g.turret, { speed: 1.2 }, g.machineGun, g.pounder, { reload: 0.75 }, { reload: 0.75 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.turret, [1, 1, 1, 1, 1, 1, 1, 1.2, 1, 1, 1, 1, 1], g.machineGun, g.pounder, [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: exports.bullet,
             STAT_CALCULATOR: gunCalcNames.fixedReload
         }
     }, {
         POSITION: [20, 6, 1, 0, -5, 0, 0.5],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, { recoil: 1.15 }, g.turret, { speed: 1.2 }, g.machineGun, g.pounder, { reload: 0.75 }, { reload: 0.75 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.power, [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], g.turret, [1, 1, 1, 1, 1, 1, 1, 1.2, 1, 1, 1, 1, 1], g.machineGun, g.pounder, [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
             TYPE: exports.bullet,
             STAT_CALCULATOR: gunCalcNames.fixedReload
         }
@@ -2572,7 +2633,7 @@ exports.pillboxTurret = {
     GUNS: [{
         POSITION: [22, 11, 1, 0, 0, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, g.minionGun, g.turret, g.power, g.autoTurret, { density: 0.1 }]),
+            SHOOT_SETTINGS: combineStats([g.basic, g.minionGun, g.turret, g.power, g.autoTurret, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.1, 1, 1]]),
             TYPE: exports.bullet
         }
     }]
@@ -2697,10 +2758,45 @@ exports.hive = {
         }
     }],
 };
-exports.overdriveDeco = makeDeco(4)
+exports.overdriveDeco = makeDeco(4);
+exports.assemblerEffect = {
+    PARENT: [exports.bullet],
+    MOTION_TYPE: 'assembler',
+    LABEL: '',
+    BODY: {
+        DAMAGE: 0,
+        RANGE: 10
+    },
+    ALPHA: 0.8
+};
+exports.assemblerDot = {
+    LABEL: '',
+    SHAPE: -4,
+    COLOR: 17,
+    INDEPENDENT: true
+};
+exports.assemblerTrap = {
+    PARENT: [exports.setTrap],
+    LABEL: 'Assembler Trap',
+    BODY: {
+        SPEED: 0.7,
+        ACCELERATION: 0.75
+    },
+    TURRETS: [{
+        POSITION: [4, 0, 0, 0, 360, 1],
+        TYPE: exports.assemblerDot,
+    }]
+};
 exports.smasherBody = {
     LABEL: '',
-    CONTROLLERS: ['spin'], 
+    CONTROLLERS: [['spin', { independent: true }]],
+    COLOR: 9,
+    SHAPE: 6,
+    INDEPENDENT: true
+};
+exports.landmineBody = {
+    LABEL: '',
+    CONTROLLERS: [['spin', { independent: true, speed: 0.08 }]],
     COLOR: 9,
     SHAPE: 6,
     INDEPENDENT: true
@@ -2710,7 +2806,7 @@ exports.spikeBody = {
     SHAPE: 3
 };
 
-// TANKS
+// BASIC & IT'S UPGRADES
 exports.basic = {
     PARENT: [exports.genericTank],
     LABEL: 'Basic',
@@ -2720,6 +2816,145 @@ exports.basic = {
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.basic]),
             TYPE: exports.bullet
+        }
+    }]
+};
+exports.twin = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Twin',
+    GUNS: [{
+        POSITION: [20, 8, 1, 0, 5.5, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [20, 8, 1, 0, -5.5, 0, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.sniper = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Sniper',
+    BODY: {
+        FOV: base.FOV * 1.2
+    },
+    GUNS: [{
+        POSITION: [24, 8.5, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.machineGun = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Machine Gun',
+    GUNS: [{
+        POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.machineGun]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.flankGuard = makeMulti({
+    PARENT: [exports.genericTank],
+    BODY: {
+        SPEED: base.SPEED * 1.1
+    },
+    GUNS: [{
+        POSITION: [18, 8, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.flankGuard]),
+            TYPE: exports.bullet
+        }
+    }]
+}, 3, 'Flank Guard');
+exports.director = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Director',
+    STAT_NAMES: statnames.drone,
+    BODY: {
+        FOV: base.FOV * 1.1
+    },
+    GUNS: [{
+        POSITION: [6, 11, 1.3, 7, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone]),
+            TYPE: exports.drone,
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.drone,
+            MAX_CHILDREN: 6
+        }
+    }]
+};
+exports.pounder = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Pounder',
+    GUNS: [{
+        POSITION: [20.5, 12, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pounder]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.trapper = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Trapper',
+    STAT_NAMES: statnames.trap,
+    GUNS: [{
+        POSITION: [15, 7, 1, 0, 0, 0, 0]
+    }, {
+        POSITION: [3, 7, 1.7, 15, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.trap]),
+            TYPE: exports.trap,
+            STAT_CALCULATOR: gunCalcNames.trap
+        }
+    }]
+};
+exports.desmos = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Desmos',
+    STAT_NAMES: statnames.desmos,
+    GUNS: [{
+        POSITION: [20, 10, 0.8, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.desmos]),
+            TYPE: [exports.bullet, {MOTION_TYPE: 'desmos'}]
+        }
+    }, {
+        POSITION: [3.75, 10, 2.125, 1.25, -6.25, 90, 0]
+    }, {
+        POSITION: [3.75, 10, 2.125, 1.25, 6.25, -90, 0]
+    }]
+};
+exports.smasher = {
+    PARENT: [exports.genericSmasher],
+    LABEL: 'Smasher',
+    DANGER: 6,
+    TURRETS: [{
+        POSITION: [21.5, 0, 0, 0, 360, 0],
+        TYPE: exports.smasherBody
+    }]
+};
+exports.healer = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Healer',
+    STAT_NAMES: statnames.heal,
+    GUNS: [{
+        POSITION: [8, 9, -0.5, 12.5, 0, 0, 0]
+    }, {
+        POSITION: [18, 10, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.healer]),
+            TYPE: exports.healerBullet
         }
     }]
 };
@@ -2793,7 +3028,7 @@ exports.whirlwind = {
         SPEED: 2,
     },
     GUNS: [{
-        POSITION: [1, 8, 0, 0, 0, 0, 0],
+        POSITION: [1, 8, 1, 0, 0, 0, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.satellite]), 
             TYPE: [exports.satellite, { ANGLE: 0 }],
@@ -2803,7 +3038,7 @@ exports.whirlwind = {
             WAIT_TO_CYCLE: true
         }
     }, {
-        POSITION: [1, 8, 0, 0, 0, 0, 0.25],
+        POSITION: [1, 8, 1, 0, 0, 0, 0.25],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.satellite]), 
             TYPE: [exports.satellite, { ANGLE: 60 }],
@@ -2813,7 +3048,7 @@ exports.whirlwind = {
             WAIT_TO_CYCLE: true
         }
     }, {
-        POSITION: [1, 8, 0, 0, 0, 0, 0.5],
+        POSITION: [1, 8, 1, 0, 0, 0, 0.5],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.satellite]), 
             TYPE: [exports.satellite, { ANGLE: 120 }],
@@ -2823,7 +3058,7 @@ exports.whirlwind = {
             WAIT_TO_CYCLE: true
         }
     }, {
-        POSITION: [1, 8, 0, 0, 0, 0, 0.75],
+        POSITION: [1, 8, 1, 0, 0, 0, 0.75],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.satellite]), 
             TYPE: [exports.satellite, { ANGLE: 180 }],
@@ -2833,7 +3068,7 @@ exports.whirlwind = {
             WAIT_TO_CYCLE: true
         }
     }, {
-        POSITION: [1, 8, 0, 0, 0, 0, 1],
+        POSITION: [1, 8, 1, 0, 0, 0, 1],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.satellite]), 
             TYPE: [exports.satellite, { ANGLE: 240 }],
@@ -2843,7 +3078,7 @@ exports.whirlwind = {
             WAIT_TO_CYCLE: true
         }
     }, {
-        POSITION: [1, 8, 0, 0, 0, 0, 1.25],
+        POSITION: [1, 8, 1, 0, 0, 0, 1.25],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.satellite]), 
             TYPE: [exports.satellite, { ANGLE: 300 }],
@@ -3247,7 +3482,13 @@ exports.elite = {
 
 // UPGRADE PATHS
 exports.testbed.UPGRADES_TIER_3 = [exports.basic];
-exports.basic.UPGRADES_TIER_1 = [];
+exports.basic.UPGRADES_TIER_1 = [
+    exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director,
+    exports.pounder, exports.trapper, exports.desmos
+];
+exports.basic.UPGRADES_TIER_2 = [
+    exports.smasher, exports.healer
+];
 
 // EVOLUTIONS
 exports.egg.EVOLUTIONS = [

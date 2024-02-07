@@ -2785,7 +2785,8 @@ exports.assemblerTrap = {
     TURRETS: [{
         POSITION: [4, 0, 0, 0, 360, 1],
         TYPE: exports.assemblerDot,
-    }]
+    }],
+    HITS_OWN_TYPE: 'assembler'
 };
 exports.smasherBody = {
     LABEL: '',
@@ -2959,6 +2960,32 @@ exports.healer = {
     }]
 };
 
+// BUILDER UPGRADES
+exports.assembler = {
+    PARENT: [exports.genericTank],
+    DANGER: 7,
+    LABEL: 'Assembler',
+    STAT_NAMES: statnames.trap,
+    BODY: {
+        SPEED: base.SPEED * 0.8,
+        FOV: base.FOV * 1.15
+    },
+    GUNS: [{
+        POSITION: [18, 12, 1, 0, 0, 0, 0]
+    }, {
+        POSITION: [2, 12, 1.1, 18, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.trap, g.setTrap]),
+            TYPE: exports.assemblerTrap,
+            MAX_CHILDREN: 8
+        }
+    }],
+    TURRETS: [{
+        POSITION: [2.5, 14, 0, 0, 360, 1],
+        TYPE: exports.assemblerDot
+    }]
+};
+
 // DEVELOPER-ONLY STUFF
 exports.testbed = {
     PARENT: [exports.genericTank],
@@ -3087,6 +3114,76 @@ exports.whirlwind = {
             SYNCS_SKILLS: false,
             WAIT_TO_CYCLE: true
         }
+    }]
+};
+
+// funny shit
+exports.assemblerTrapFunny = {
+    PARENT: [exports.setTrap],
+    LABEL: 'Ass-Embler Trap',
+    BODY: {
+        SPEED: 0.7,
+        ACCELERATION: 0.75
+    },
+    TURRETS: [{
+        POSITION: [4, 0, 0, 0, 360, 1],
+        TYPE: exports.assemblerDot,
+    }],
+    HITS_OWN_TYPE: 'funnyAssembler'
+};
+exports.comedyAssembler = {
+    PARENT: [exports.genericTank],
+    DANGER: 7,
+    LABEL: 'Comedy Assembler',
+    STAT_NAMES: statnames.trap,
+    BODY: {
+        SPEED: base.SPEED * 0.8,
+        FOV: base.FOV * 1.15
+    },
+    GUNS: [{
+        POSITION: [18, 12, 1, 0, 0, 0, 0]
+    }, {
+        POSITION: [2, 12, 1.1, 18, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.trap, g.setTrap]),
+            TYPE: exports.assemblerTrapFunny
+        }
+    }],
+    TURRETS: [{
+        POSITION: [2.5, 14, 0, 0, 360, 1],
+        TYPE: exports.assemblerDot
+    }, {
+        POSITION: [8, 0, 0, 0, 360, 1],
+        TYPE: exports.assemblerDot
+    }]
+};
+exports.ultraComedyAssembler = {
+    PARENT: [exports.genericTank],
+    DANGER: 7,
+    LABEL: 'ULTRA Comedy Assembler',
+    STAT_NAMES: statnames.trap,
+    BODY: {
+        SPEED: base.SPEED * 0.8,
+        FOV: base.FOV * 1.15
+    },
+    GUNS: [{
+        POSITION: [18, 12, 1, 0, 0, 0, 0]
+    }, {
+        POSITION: [2, 12, 1.1, 18, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.trap, g.setTrap, [0.01, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.5, 1]]),
+            TYPE: exports.assemblerTrapFunny
+        }
+    }],
+    TURRETS: [{
+        POSITION: [2.5, 14, 0, 0, 360, 1],
+        TYPE: exports.assemblerDot
+    }, {
+        POSITION: [8, 0, 0, 0, 360, 1],
+        TYPE: exports.assemblerDot
+    }, {
+        POSITION: [4, 0, 0, 0, 360, 1],
+        TYPE: exports.assemblerDot
     }]
 };
 
@@ -3481,7 +3578,7 @@ exports.elite = {
 };
 
 // UPGRADE PATHS
-exports.testbed.UPGRADES_TIER_3 = [exports.basic];
+exports.testbed.UPGRADES_TIER_3 = [exports.comedyAssembler, exports.ultraComedyAssembler, exports.auraBasic, exports.whirlwind, exports.basic];
 exports.basic.UPGRADES_TIER_1 = [
     exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director,
     exports.pounder, exports.trapper, exports.desmos

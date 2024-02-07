@@ -2324,7 +2324,14 @@ class Entity {
             this.velocity.y = this.source.velocity.y;
             break;
         case 'assembler':
+            this.alpha -= 0.02;
             this.SIZE += 0.17;
+            if (this.alpha <= 0) {
+                this.kill();
+                if (this.SIZE > 50) {
+                    this.destroy();
+                }
+            }
             break;
         case 'desmos':
             this.damp = 0;
@@ -4582,6 +4589,15 @@ var gameloop = (() => {
                 }
             }
         }
+        const growOnCollision = (instance, other) => {
+            if (instance.SIZE >= other.SIZE) {
+                instance.SIZE += 7;
+                other.kill();
+            } else {
+                other.SIZE += 7;
+                instance.kill();
+            }
+        };
         // The actual collision resolution function
         return collision => {
             // Pull the two objects from the collision grid      
@@ -4625,20 +4641,82 @@ var gameloop = (() => {
                 firmcollide(instance, other);
             } else
             // Otherwise, collide normally if they're from different teams
-            if (instance.team !== other.team) {
+            if (instance.team !== other.team || (instance.team === other.team && (instance.healer || other.healer))) {
+                // Exits if the aura is not hitting a boss or tank
+                if (instance.type === 'aura') {
+                    if (!(other.type === 'tank' || other.type === 'miniboss' || other.type == 'food' || other.type == 'crasher')) return;
+                } else if (other.type === 'aura') {
+                    if (!(instance.type === 'tank' || instance.type === 'miniboss' || instance.type == 'food' || instance.type == 'crasher')) return;
+                }
                 advancedcollide(instance, other, true, true);
             } else 
             // Ignore them if either has asked to be
             if (instance.settings.hitsOwnType == 'never' || other.settings.hitsOwnType == 'never') {
-                // Do jack                    
+                // Do jack
             } else 
             // Standard collision resolution
             if (instance.settings.hitsOwnType === other.settings.hitsOwnType) {
                 switch (instance.settings.hitsOwnType) {
-                case 'push': advancedcollide(instance, other, false, false); break;
-                case 'hard': firmcollide(instance, other); break;
-                case 'hardWithBuffer': firmcollide(instance, other, 30); break;
-                case 'repel': simplecollide(instance, other); break;
+                    case 'assembler': { // ty aps++
+                        if (instance.assemblerLevel == null) instance.assemblerLevel = 1;
+                        if (other.assemblerLevel == null) other.assemblerLevel = 1;
+                        const [target1, target2] = (instance.id > other.id) ? [instance, other] : [other, instance];
+                        if (
+                            target2.assemblerLevel >= 10 || target1.assemblerLevel >= 10 ||
+                            target1.isDead() || target2.isDead() ||
+                            target1.parent.id != target2.parent.id &&
+                            target1.parent.id != null &&
+                            target2.parent.id != null // idk why
+                        ) {
+                            advancedcollide(instance, other, false, false); // continue push
+                            break;
+                        }
+                        const better = (state) => {
+                            return target1[state] > target2[state] ? target1[state] : target2[state];
+                        }
+                        target1.assemblerLevel = Math.min(target2.assemblerLevel + target1.assemblerLevel, 10);
+                        target1.SIZE = better('SIZE') * 1.1;
+                        target1.SPEED = better('SPEED') * 0.9;
+                        target1.HEALTH = better('HEALTH') * 1.2;
+                        target1.health.amount = target1.health.max;
+                        target1.DAMAGE = better('DAMAGE') * 1.1;
+                        target2.kill();
+                        for (let i = 0; i < 10; ++i) {
+                            const o = new Entity(target1, target1);
+                            o.define(Class.assemblerEffect);
+                            o.team = target1.team;
+                            o.color = target1.color;
+                            o.SIZE = target1.SIZE / 3;
+                            o.velocity = new Vector((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 25);
+                            o.refreshBodyAttributes();
+                            o.life();
+                        }
+                    } // don't break
+                    case 'funnyAssembler':
+                        if (instance.master.id === other.master.id) growOnCollision(instance, other);
+                        break;
+                    case 'push':
+                        advancedcollide(instance, other, false, false);
+                        break;
+                    case 'hard':
+                        firmcollide(instance, other);
+                        break;
+                    case 'hardWithBuffer':
+                        firmcollide(instance, other, 30);
+                        break;
+                    case 'hardOnlyTanks':
+                        if (instance.type === 'tank' && other.type === 'tank') {
+                            firmcollide(instance, other);
+                        }
+                        break;
+                    case 'hardOnlyBosses':
+                        if (instance.type === other.type && instance.type === 'miniboss') {
+                            firmcollide(instance, other);
+                        }
+                        break;
+                    case 'repel':
+                        simplecollide(instance, other);
+                        break;
                 }
             }     
         };

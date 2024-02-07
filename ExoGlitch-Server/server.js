@@ -765,7 +765,27 @@ class io_fleeAtLowHealth extends IO {
             };
         }
     }
+}
+class io_zoom extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.distance = opts.distance || 225;
+        this.dynamic = opts.dynamic;
+        this.permanent = opts.permanent;
+    }
 
+    think(input) {
+        if (this.permanent || (input.alt && input.target)) {
+            if (this.dynamic || this.body.cameraOverrideX === null) {
+                let direction = Math.atan2(input.target.y, input.target.x);
+                this.body.cameraOverrideX = this.body.x + this.distance * Math.cos(direction);
+                this.body.cameraOverrideY = this.body.y + this.distance * Math.sin(direction);
+            }
+        } else {
+            this.body.cameraOverrideX = null;
+            this.body.cameraOverrideY = null;
+        }
+    }
 }
 class io_whirlwind extends IO {
     constructor(body, opts = {}) {
@@ -856,6 +876,7 @@ class io_disableOnOverride extends IO {
 }
 
 let ioTypes = {
+    zoom: io_zoom,
     doNothing: io_doNothing,
     listenToPlayer: io_listenToPlayer,
     alwaysFire: io_alwaysFire,
@@ -1698,6 +1719,8 @@ class Entity {
         this.stepRemaining = 1;
         this.x = position.x;
         this.y = position.y;
+        this.cameraOverrideX = null;
+        this.cameraOverrideY = null;
         this.velocity = new Vector(0, 0);
         this.accel = new Vector(0, 0);
         this.damp = 0.05;
@@ -1869,6 +1892,7 @@ class Entity {
         if (set.BROADCAST_MESSAGE != null) { 
             this.settings.broadcastMessage = (set.BROADCAST_MESSAGE === '') ? undefined : set.BROADCAST_MESSAGE; 
         }
+        if (set.HEALER) this.healer = true;
         if (set.DAMAGE_CLASS != null) { 
             this.settings.damageClass = set.DAMAGE_CLASS; 
         }
@@ -2186,12 +2210,13 @@ class Entity {
             this.upgrades = [];
             this.define(saveMe);
             this.sendMessage('You have upgraded to ' + this.label + '.');
+            if (typeof saveMe.TOOLTIP === 'string') this.sendMessage(saveMe.TOOLTIP);
             let ID = this.id;
             entities.forEach(instance => {
                 if (instance.settings.clearOnMasterUpgrade && instance.master.id === ID) {
                     instance.kill();
                 }
-            }); 
+            });
             this.skill.update();
             this.refreshBodyAttributes();
         }
@@ -2411,6 +2436,9 @@ class Entity {
         switch(this.facingType) {
         case 'autospin':
             this.facing += 0.02 / roomSpeed;
+            break;
+        case 'twisterMissileSpin':
+            this.facing += 0.1 / roomSpeed;
             break;
         case 'turnWithSpeed':
             this.facing += this.velocity.length / 90 * Math.PI / roomSpeed;
@@ -3733,8 +3761,8 @@ const sockets = (() => {
                                 // I live!
                                 else if (player.body.photo) {
                                     // Update camera position and motion
-                                    camera.x = player.body.photo.x;
-                                    camera.y = player.body.photo.y;  
+                                    camera.x = player.body.cameraOverrideX === null ? player.body.photo.x : player.body.cameraOverrideX;
+                                    camera.y = player.body.cameraOverrideY === null ? player.body.photo.y : player.body.cameraOverrideY;
                                     camera.vx = player.body.photo.vx;
                                     camera.vy = player.body.photo.vy;  
                                     // Get what we should be able to see     

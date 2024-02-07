@@ -2196,7 +2196,7 @@ exports.minimissile = {
 };
 exports.spinmissile = {
     PARENT: [exports.missile],
-    FACING_TYPE: 'autospin',
+    FACING_TYPE: 'twisterMissileSpin',
     GUNS: [{
         POSITION: [14, 8, 1, 0, 0, 0, 0],
         PROPERTIES: {
@@ -2960,6 +2960,349 @@ exports.healer = {
     }]
 };
 
+// TWIN UPGRADES
+exports.doubleTwin = makeMulti({
+    PARENT: [exports.genericTank],
+    LABEL: 'Twin',
+    DANGER: 6,
+    GUNS: [{
+        POSITION: [20, 8, 1, 0, 5.5, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.doubleTwin]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [20, 8, 1, 0, -5.5, 0, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.doubleTwin]),
+            TYPE: exports.bullet
+        }
+    }]
+}, 2, 'Double Twin');
+exports.tripleShot = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Triple Shot',
+    DANGER: 6,
+    BODY: {
+        SPEED: base.SPEED * 0.9
+    },
+    GUNS: [{
+        POSITION: [19, 8, 1, 0, -2, -17.5, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [19, 8, 1, 0, 2, 17.5, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [22, 8, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+
+// DOUBLE TWIN UPGRADES
+exports.tripleTwin = makeMulti({
+    PARENT: [exports.genericTank],
+    LABEL: 'Twin',
+    DANGER: 6,
+    GUNS: [{
+        POSITION: [20, 8, 1, 0, 5.5, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.spam, g.doubleTwin]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [20, 8, 1, 0, -5.5, 0, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.spam, g.doubleTwin]),
+            TYPE: exports.bullet
+        }
+    }]
+}, 3, 'Triple Twin');
+exports.hewnDouble = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Hewn Double',
+    DANGER: 7,
+    GUNS: [{
+        POSITION: [19, 8, 1, 0, 5.5, 205, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.twin, g.doubleTwin, g.hewnDouble, [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [19, 8, 1, 0, -5.5, -205, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.twin, g.doubleTwin, g.hewnDouble, [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [20, 8, 1, 0, 5.5, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.doubleTwin, g.hewnDouble, [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [20, 8, 1, 0, -5.5, 180, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.doubleTwin, g.hewnDouble, [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [20, 8, 1, 0, 5.5, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.doubleTwin, g.hewnDouble]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [20, 8, 1, 0, -5.5, 0, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.doubleTwin, g.hewnDouble]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+
+// TRIPLE SHOT UPGRADES
+exports.pentaShot = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Penta Shot',
+    DANGER: 7,
+    BODY: {
+        SPEED: base.SPEED * 0.85
+    },
+    GUNS: [{
+        POSITION: [16, 8, 1, 0, -3, -30, 0.667],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [16, 8, 1, 0, 3, 30, 0.667],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [19, 8, 1, 0, -2, -15, 0.333],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [19, 8, 1, 0, 2, 15, 0.333],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [22, 8, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.spreadshot = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Spreadshot',
+    DANGER: 7,
+    GUNS: [{
+        POSITION: [13, 4, 1, 0, -0.5, -75, 5 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [13, 4, 1, 0, 0.5, 75, 5 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [14.5, 4, 1, 0, -0.5, -60, 4 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [14.5, 4, 1, 0, 0.5, 60, 4 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [16, 4, 1, 0, -0.5, -45, 3 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [16, 4, 1, 0, 0.5, 45, 3 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [17.5, 4, 1, 0, -0.5, -30, 2 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [17.5, 4, 1, 0, 0.5, 30, 2 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [19, 4, 1, 0, -0.5, -15, 1 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [19, 4, 1, 0, 0.5, 15, 1 / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pelleter, g.artillery, g.twin, g.spreadshot]),
+            TYPE: exports.bullet,
+            LABEL: 'Spread'
+        }
+    }, {
+        POSITION: [12, 8, 1, 8, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pounder, g.spreadshotMain, g.spreadshot]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.bentDouble = makeMulti({
+    PARENT: [exports.genericTank],
+    DANGER: 7,
+    GUNS: [{
+        POSITION: [19, 8, 1, 0, -2, -17.5, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot, g.doubleTwin]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [19, 8, 1, 0, 2, 17.5, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot, g.doubleTwin]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [22, 8, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.tripleShot, g.doubleTwin]),
+            TYPE: exports.bullet
+        }
+    }]
+}, 2, 'Bent Double');
+exports.triplet = {
+    PARENT: [exports.genericTank],
+    DANGER: 7,
+    LABEL: 'Triplet',
+    BODY: {
+        FOV: base.FOV * 1.05
+    },
+    GUNS: [{
+        POSITION: [18, 10, 1, 0, 5, 0, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triplet]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [18, 10, 1, 0, -5, 0, 0.5],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triplet]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [21, 10, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triplet]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+
+// SNIPER UPGRADES
+exports.assassin = {
+    PARENT: [exports.genericTank],
+    DANGER: 6,
+    LABEL: 'Assassin',
+    BODY: {
+        SPEED: base.SPEED * 0.85,
+        FOV: base.FOV * 1.2
+    },
+    GUNS: [{
+        POSITION: [27, 8, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assassin]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [5, 8, -1.4, 8, 0, 0, 0]
+    }]
+};
+exports.hunter = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Hunter',
+    DANGER: 6,
+    BODY: {
+        SPEED: base.SPEED * 0.9,
+        FOV: base.FOV * 1.25
+    },
+    CONTROLLERS: ['zoom'],
+    TOOLTIP: 'Hold right click to zoom.',
+    GUNS: [{
+        POSITION: [24, 8, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunterSecondary]),
+            TYPE: exports.bullet
+        }
+    }, {
+        POSITION: [21, 12, 1, 0, 0, 0, 0.25],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+exports.rifle = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Rifle',
+    DANGER: 6,
+    BODY: {
+        FOV: base.FOV * 1.225
+    },
+    GUNS: [{
+        POSITION: [20, 12, 1, 0, 0, 0, 0]
+    }, {
+        POSITION: [24, 7, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.rifle]),
+            TYPE: exports.bullet
+        }
+    }]
+};
+
 // BUILDER UPGRADES
 exports.assembler = {
     PARENT: [exports.genericTank],
@@ -3577,16 +3920,6 @@ exports.elite = {
     }
 };
 
-// UPGRADE PATHS
-exports.testbed.UPGRADES_TIER_3 = [exports.comedyAssembler, exports.ultraComedyAssembler, exports.auraBasic, exports.whirlwind, exports.basic];
-exports.basic.UPGRADES_TIER_1 = [
-    exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director,
-    exports.pounder, exports.trapper, exports.desmos
-];
-exports.basic.UPGRADES_TIER_2 = [
-    exports.smasher, exports.healer
-];
-
 // EVOLUTIONS
 exports.egg.EVOLUTIONS = [
     ['square', 99.95-1/50-1/1000-1/3000-1/76000-1/152000-1/570000], ['gem', 0.05], ['shinyEgg', 1/50], ['legendaryEgg', 1/1000], ['shadowEgg', 1/3000],
@@ -3700,3 +4033,15 @@ exports.dodecahedron.EVOLUTIONS = [
 ];
 exports.icosahedron.EVOLUTIONS = [];
 exports.tesseract.EVOLUTIONS = [];
+
+// KEEP UPGRADE PATHS AT THE BOTTOM
+exports.testbed.UPGRADES_TIER_3 = [
+    exports.comedyAssembler, exports.ultraComedyAssembler, exports.auraBasic, exports.whirlwind, exports.basic
+];
+exports.basic.UPGRADES_TIER_1 = [
+    exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director,
+    exports.pounder, exports.trapper, exports.desmos, exports.hunter
+];
+exports.basic.UPGRADES_TIER_2 = [
+    exports.smasher, exports.healer
+];
